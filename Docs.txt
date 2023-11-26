@@ -1,0 +1,147 @@
+****************Operating System**************
+
+**kernal
+The kernel is a computer program at the core of a computer's operating system and generally has complete control over everything in the system. The kernel is also responsible for preventing and mitigating conflicts between different processes.
+Application <--> kernal<-->hardware
+
+********Introdcution to OS***************
+Operating system is simply a complete package of software which includes kernal and other system level component which helps a user to interact with the system hardware. In hardware we can have CPU, GPU, Storage devices, RAM and I/O devices.
+The interaction with the hardware can be direct using power shell or cmd or it can be done via softwares. Such as printing a document using word file. Here the instrcutios (system call) were given by the software that is MS word to access the hardware that is Printer to print the document.
+Operating system works on system calls such as read, open, write etc.
+
+Example of OS: Windows, Mac, linux etc.
+
+Goal of oS:
+1) Convenience: The main goal of operating system is to provide convenience to the users. If there would be no Operating system then the user must have to write program to access the hardware. Which create complexities for the user to even perform a simple and easy task.
+2) Throughput: Throughput means number of tasks perfoming per unit time. (Linux is famous for its high throughput)
+
+Functionality of OS:
+1) Resource management: Operating system is responsible for managing the resources. for example in case of server. Where thousands of users are accessing the same hardware. So in this case OS is responsible for managing the resources. OS will decide how much resources has to given to a user and once the user has done his task getting back the resources from the user.
+2) Process Management: OS is also responsible for process management. For example you wrote a code in c and you want to execute its file. Then OS will schedule your execution in CPU (CPU Scheduling). Multi-tasking or Multi-Processing. If there are multiple tasks are going on then OS will schedule them to execute them in most efficient way.
+3) Storage Management: (Hard drive) Concept of file system. (CISF common internet file system, Network file system). OS is also responsible for storage management. How th data will store in architecture of disk hardware that is also done by OS.
+4) Memory Management: RAM. Memory management is also done by RAM. As we know that RAM is limited. So OS takes the responsiblity to load the program in RAM and make sure once the program has completed it must not be remain in the RAM. And other process which is waiting to load in the RAM should not wait if RAM is free. All allocation and deallocation is managed my OS. As we know program is first load in RAm and then given to the CPU
+5) Security: The authentication process when we enter password. OS use kerberos security protocol. There are some task which can only done by admisitor. Do not allowing a normal user to perform admisitrative task is managed by OS. Moreover, as mentioned above when a process is load in RAM it is allocated with a portion of memory let say 0 to 100 and there is process 2 as p2 with memory allocation of 101 to 200 so in this case if any of the process will try to access or execute the instruction out way of its located memory slot then the process has blocked.
+
+*************Types of Operating Systems
+Batch
+Multi-programmed
+Multi-Tasking
+Real-Time OS
+Distributed
+Clustered
+Embedded
+
+**Batch OS
+These were very OS. In early ages of computer there were not PCs. Only big companies use Computers for big calculations etc. They offline store or load their programs in Punch Cards or you can say paper card or Magnetic tapes. Then they give it to the opertor. Then the operator insert this Punch card in Computer and then make batches. Batch is a set of instructions of similar job. Let say after inserting the puch card we have 3 batches and each batch contains diff. number of jobs. 1st batch is sent to the CPU and out that batch 1st job is sent to CPU for execution let say that job requires I/O device. CPU send it to I/O device for processing will wait until the process has completed during this time the CPU is Idle. He will not take the next job until the first one is executed. This was the major drawback of Batch OS.
+With time refinments were made like they introduced monitors instead of using operators (employee) so can by yourself directory insert your punch card and do your job. Such as FORTRAN and IBSYS709X (In 1960)
+
+**Multi-Programmed OS (Non-preemptive)
+The concept was to load mutliple process in the RAM and then execute each path until its completion. Here the main focus was on idleness of CPU. CPU should not be idle. But the priority of system is to execute one process completely until unless the executing tasks contains instructions which is not CPU intensive such as I/O instruction etc. In that case CPU will allow the process to go to I/O device and in that time CPU will not remain idle. It will start executing the second task. The majore draw back here is that the last process has to wait. Means we lagged in response. But we successfully eliminated the idleness of CPU.
+
+For examaple: 10 students each contains 5 questions to solve. Only one teacher which is acting as a CPU. All students are in the class. Here class is a RAM. One student will come to the teacher he will solve all 5 questions of it. then will move to the 2nd student. If student 1 wants to go to washroom or anyother task teacher (CPU) will not stop him to go. He will move to the student 2 and will start solving his 5 questions. and so on.
+
+**Multi-Tasking/ Time sharing (Preemptive)
+In such OS the CPU will give a specific amount of time to a certain task. If in that time the tasks has completely executed then well and good otherwise he will move to the 2nd task and so on. In this case CPU is not idle at all but here we have increased our response time. Now the last task will not have to wait much. He will get response fast.
+
+For Example: 10 students each contains 5 questions to solve. Only one teacher which is acting as a CPU. All students are in the class. Here class is a RAM. One student will come to the teacher he will solve only 2 questions and will move to the 2nd student and so on. On reaching to the 10th student he will come back to the 1st student and will solve other 2 and so on. But in this case every student is getting response faster.
+
+****Diff b/w preemptive and non-preemptive
+Non-Preemptive scheduling in which Process transition is from ready state to running state (will execute completey until unless program it self do not go for other instructions)
+Preemptive scheduling in which Process transition is from a running state to a ready state or from a waiting state to a ready state. 
+
+
+**Real time operating systems
+Those systems which respond immediately contains real time operating systems such as live streaming etc. There are two types of real-time operating systems such as soft OS and Hard OS. Soft Real time OS are used where time constraint is not strict such as live streaming. We can afford a little bit of delay in live streaming. But in case of defensive missiles we cannot afford delays in time. For such pursposes where time constraint is very important we use Real Time operating system.
+
+***Distributed OS
+Distributed refers to splitting a buisness into small sub-services. For example Meta distributed his database server geographically but they are connected to each other. To handle such distributed environments we use Distributed OS. They have advantage that if one system fails other can do its job.
+
+***Cluster OS
+Cluster refers to grouping of several server to make a big machine to deal a same business. They can be considered as one computer. For example supercomputer is a cluster. To deal with such systems we have Cluster OS.
+
+***Embedded OS
+OS for embbeded hardware that have only specific functionality. Such as embedded hardware of a home appliance. Microwave hardware have embedded OS only have one functionality to operate microwave oven. The embedded OS of micrwave cannot be used for embedded OS for a smart washing machine.
+
+
+***********Process State
+Its a very very important conceptual model for the understanding of user in operating systems
+There are some primary and some secondary or you can say additional states
+
+new ---> Ready ---> Running --->terminate
+
+when we create a process and stores in a Hard drive that we can say its a stable process that will be in new state. Then the LTS (Long term scheduler) bring all the tasks in the Ready state (Its a state in RAM, concept of multi-programming). Then STS (Short term scheduler) brings one process from ready state to the Running state (The running state is in CPU, where processing happens). We are taking only one process at a time in Running state as we are assuming our whole OS syllabus is on Uni OS (means one CPU) not Multi-OS.
+Once a process is completely executed in Running state it is send to the terminate state or you can say CPU dellocation. Now next task will come and so on. This is simple scenario of process state. 
+
+**Case-1: (Preempitive)
+
+new ---> Ready <---> Running --->terminate
+
+Let say 1 process was running in the running state and then system calls a VIP process that has priority then the process which was running in the CPU (Running state) will send back to the Ready state (In RAM queue) and the VIP process will start executing in Running state.
+
+or there could be a case that our CPU is running on 2 sec execution for each task. Then in this case the CPU will execute one task for 2 seconds and then will send back it to the Ready state and will execute 2nd process for 2 seconds and so on. All this transition between Running and ready state is done by STS (Short term scheduler)
+
+** Case-2: (Non-Preempitive)
+
+new ---> Ready ---> Running --->terminate
+              \        /
+               \      /
+             Waiting/Block
+ 
+
+In which task in the CPU (running state) will be execute completely until unless our process is to be processed by secondry device. Task do not come back to Ready state from running-state in case of Non-Preempitive scheduling. Here if the process is executing in the running state and the process itself requires a secondary device operation such as I/O device then in this case the process will be send in the waiting state. Here once the process is executed by the I/O device it will not be send back to running state but it will send back to the ready state then it will enter into the running state and then will be terminated. 
+
+**NOTE: The difference in transition must be noted that in case of preempitive the process is directly send back to the ready state from Running state. But in case of Non-prempitive it is not directly send back to ready state but it is coming back from waiting state.
+
+**Case-3: (Worst case, our waiting list get full)
+
+new ---> Ready ---> Running --->terminate
+              \        /
+               \      /
+             Waiting/Block (Full)
+                  |
+                  |
+                Suspend 
+
+let say we created 10 process and all process requires a secondary device for their execution then CPU will send all processes in the waiting state. Let say our waiting state get full (waiting state is also in RAM) then in this case MTS (Mid term scheduler) will send them in "Suspended State". Once there will be some space empty in the waiting list they will come in the waiting state and then again send back to Ready State (Remember once a task has entered into the waiting state or suspended it will not go back to running state but will send back to Ready state). Let say our tasks in the waiting list are taking too much time the process in the suspended state will not remain here forever but in such cases it will send back directly to the ready state.
+
+new ---> Ready ---> Running --->terminate
+         \     \        /
+          \     \      /
+           \  Waiting/Block (Full and taking too much time)
+            \      |
+             \     |
+              <--Suspend 
+
+**Case-4: (Ready State get full)
+
+        Suspend
+          |
+          | (Full)
+new ---> Ready ---> Running --->terminate
+         \     \        /
+          \     \      /
+           \  Waiting/Block (Full and taking too much time)
+            \      |
+             \     |
+              <--Suspend 
+
+in such cases the process will send to Suspended state. Once there is some space in Ready state the process is entered in Ready state and so on.
+
+Summarized and complete model
+
+                Suspend
+                   |
+                   | 
+new ---(LTS)---> Ready ---(STS)---> Running --->terminate
+         \     \        /
+          \     \      /
+           \  Waiting/Block 
+            \       |
+             \    (MTS)
+              \     |
+               <--Suspend 
+
+LTS: Long term scheduler
+MTS: Mid term scheduler
+STS: Short term scheduler
+ 
