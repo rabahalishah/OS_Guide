@@ -958,3 +958,532 @@ Secondary:
 4) No assumption related to hardware: Your code should not be dependent on the hardware such as it will work on linux and wont work on windows. It should not be the case.
 
 
+*****************Implementation of process synchronization
+
+***********Method 1 LOCK variable***************:
+This is executed in user mode.
+Used for multiprocess solution.
+This is one approach to implement process synchronization. 
+
+LOCK = 0 means critical section is free
+LOCK = 1 means critical section is not free
+
+1) while(LOCK == 1);
+2) LOCK = 1;
+3) Critical section
+4) LOCK = 0;
+
+Case 1:
+Initiallay Lock = 0
+
+P1 comes while condition false as LOCK = 0
+LOCK value set to 1
+critical section
+
+now p1 is in critical section and value of LOCK variable is 1
+
+when P2 will come while condition will become true and since there is a semi colon after while loop means p2 will struck in the infinite loop and will not be allowed to get enter into the critical section until p1 do not get out.
+
+when p1 will get out it will execute the line 4 and lock will set to 0 and now p2 will be allowed to come.
+
+
+**IMPORTANT** DO you guaranttee that mutual exclusion will always be followed in every case of Lock variable? The answer is NO.
+
+Case 2:
+Let say
+
+p1 comes and initially LOCK = 0 so while loop will be false
+as when the p1 was about to execute the 2nd line that is LOCK = 1; before executing it p1 get prempt
+during this time p2 comes while(LOCK ==1) becomes false and LOCK will be set to 1  p2 will be allowed to get enter into the critical section.
+Now p1 come back and resume from where it left. P1 will resume from line 2 where LOCK will be again set to 1 which is already 1. and p1 will also be allowed to get into critical section.
+
+Now both processes are in critical section. Mutual exlusion failed in this case of lock variable.
+so no guaranttee for mutual exclusion
+
+
+**************Method 2 "Test_and_Set" instruction
+
+we simply resolved the upper case by combining the two instructions in one instruction.
+
+Since the premption was possible between these two lines:
+1) while(LOCK == 1);
+2) LOCK = 1;
+3) critical section
+4) LOCK =0;
+
+so we combined both and make it a single instruction as
+
+1) while(test_and_set(& lock));
+2) critcal section
+3) lock = false;
+
+//here test_and_set() function is doing both testing the incoming value and setting the lock value both in one command:
+
+//test_and_set(boolean *traget){
+boolean r = *target
+*target = TRUE;
+return r;
+
+}
+
+
+so let say p1 process came who have initially the value of lock= false
+here *target is a pointer which is pointing toward the value of lock in the memory at some address. here we are calling by reference thats why we have used &lock.
+okay so in simple initially the value of lock was false. which is assigned to r and returned. So r = false will be returned so while condition will be falsed and p1 will get enter into the critical section. Before returinng the vakue of r. By using *target = TRUE. we have set the value of LOCK = TRUE as *target is pointing toward the value stored in LOCK variable. 
+
+now if the process 2 comes. now the value of lock is TRUE so when the test_and_set function will be called, here due to "boolean r = *target" the value of r will be set to the value which is stored in LOCK variable (AS *target is pointing toward the value stored in LOCK variable). So r= true and it will returned and again the value of lock will be set to TRUE.
+so now we have set the value of lock = true and return value r = true so while condition will be true so p2 will be struck in while loop and will not be allowed to get enter into the critical section. By doing it so with the help of test_and_set instruction we have successfully prevented mutual exculusion.
+
+****************Turn variable | Strict alteration method
+Process P1 		| Process P2
+while(turn !=0)		| while(turn!=1)
+critical section	| critical section
+turn =1;		| turn = 0;
+
+here assuming initially turn = 0 then P1 will have false while condition then it will get enter into the critical section and then turn = 1 it will be updated.
+while the process is in critical condition the process 2 cannot be enter into critical section. As turn = 0 and while conidtion is true for process 2. so it will not be allowed to get enter into critical section. p2 will be only allowed to get into the critical section when turn = 1 and that will be done when process p1 will be terminated.
+
+Remarks:
+1) Mutual exclusion is guaranteed as one of the process cannot enter into the critical section when other is in critical section.
+2) Progress is not guranteed as for turn = 0 p2 cannot enter in critical section. P2 will be only allowed to get enter into critical section until p1 has not entered in critical section. So p2 is dependent on p2 so progress is not followed here.
+3) Bound wait. When P1 has executed it cannot again executed until the p2. and when the p2 has executed it cannot be executed again until p1 has not executed. So no one have is bound wait. each will execute one by one.
+4) It is not hardware dependent.
+
+********************Semaphores
+There are two types of semaphore. 1st one is counting semaphore that can be from (-infinity to +infinity) and 2nd one is  binary ( 0 or 1)
+Semaphore is an integer variable (-infinity to +infinity) which is used in mutual exclusive manners by various concurrent coopertive processes in order to achieve synchronization.
+OR in simple words "A semaphore is a value in a designated place in operating system (or kernel) storage that each process can check and then change. Depending on the value that is found, the process can use the resource or will find that it is already in use and must wait for some period before trying again."
+
+P() (Or Down, wait)
+V() ( or up, signal, post, release)
+
+we generally do these above operations on semaphores. Every semaphore integer has some meaning. lets understand those meaning with a piece of code
+
+Down(Semaphore S)				| Up (Semaphore S)
+{						| {
+S.value = S.value - 1;				| S.value = S.value + 1;
+if(S.value < 0)					| if(S.value <= 0)
+{						| {
+put process (PCB) in suspended list		| Select a process from suspended list and wakeup() (add in the ready queue)
+}						| }
+else						| else
+ return;					|  return;
+}						| }
+
+
+
+Here S is semaphore integer variable and can be denoted by any variable. 
+let say S= 3
+
+so lets perform down operation P()
+s.value will be decremented to 2 
+Is 2 < 0 ---> false ---> entered in to Critical section
+
+now again 
+
+s.value = 1
+
+1 < 0 --> false ---> entered into critical section
+
+
+again 
+s.value = 0 
+
+0 < 0 ---> false --> entered into critical section
+
+
+so now S= 3 means max 3 process are allowed to enter into critical section
+
+S= 0 means no section is allowed to enter into critical section
+
+
+so now if S = 0 decrement
+
+s = -1
+
+-1 < 0 ---> true ---> added into block list
+
+and so on
+
+so we can say
+
+S= -1 means --> 1 process will be in block list
+
+
+Conclusion:
+S = -n ---> means n number of processes will be in block list
+and S = n means max number of processes are allowed to enter in critical list
+
+where n is not equal to 0;
+
++ve values are usually termed as successful operations as they would enter in the critical section
+-ve values are termed as unsuccessful operations as they wont enter into critical section but block list
+--------------
+
+for V() operation means up operation,
+
+Semaphore will be increamented 
+
+on true condition one process from block list will be added to the ready queue
+
+
+***************Question on semaphore
+For S = 10
+what will be final value of semaphore on performing 6P, 4V operations?
+10-6+4 = 8
+
+S = 8
+
+6P means 6 down, and 4V means for up
+
+For S= 17 
+5P, 3V, 1P operation
+
+S = 17-5+3-1 = 14 
+
+S= 14
+
+
+**************Binary Semaphores
+Down()						| Up (Semaphore S){
+{						| if(suspended list is empty) {
+if(S.value==1)					| S.value = 1;}
+						| else
+{						| {
+S.value=0;					| Select a process from suspended list and wakeup() (add in the ready queue)}
+}						| }
+else{						| 
+ Block this process and add 			| 
+suspended list					|
+}						| 
+}
+
+
+Example
+
+p1			| P2
+			|
+Down(S)			| Down(s)
+			|
+Critical Section	| critical section	
+			|
+Up(S)			| up(s)
+
+
+let S =1
+
+and let p2 tried to enter into critical section
+
+p2 have to perform down opertion. It will be a successful operation as S=1 it will be updated to S=0 and P2 will be allowed to access the critical section.
+Now p1 also tried to access critical section. It will be failed as now S = 0 and for S=0 down operation would block the process and add it into suspended list. 
+
+when p2 will come out it will call up operation which will check the suspeneded list since there is p1 is suspended list it will pick the suspended list will add it in ready queue so that in future it can be run.
+
+
+
+*****************Solving consumer producer problem using semaphores*********
+********************Producer and consumer example of process synchronization***********
+//Consumer Code				| //Producer code
+void consumer(){			| 
+					| void produce(void){
+1) down(full)				| 1) down(empty)
+2) down(S)				| 2) down(s)
+					| {
+{					| 
+itemC = Buffer(out);			| 
+out = (out+1)mode(n);			| Buffer[in] = itemP
+}					| in = (in + 1) modn;
+3) up(S)		 		| 
+4) up(empty)				| }
+					| 3) up(s)
+					| 4) up(full)
+}					| }
+
+
+In last time you might have remember that we were achieving the race condition again in which two wrong values were racing to win. So here our main goal is to prevent the mutual exclusion. That is if one process either consumer or producer are in critical section then the other process should not be allowed to enter in critical section otherwise race condition will be achieved.
+Here you just have a concept of down() and up() function. Down() function down or decrement the value whereas up increment of up the value.
+
+Assume we have 8 rows from index 1 to 7 out of which 3 are filled and rest of 5 are empty. So S=1, Empty =5, Full= 3
+
+IN which is the index of producer code have value 3 means the 4th row. Means producer code is ready to add the 4th element in the stack at index 3 which is forth row.
+Let S= 1
+
+producer code runs
+
+1) Empty=5--> Empty= 4
+
+before executing point 2 that is down(s) producer prempt
+
+now consumer code will run
+
+1) Full= 3--> Full=2
+2) S=1--> s=0
+
+Critical section here it will consume one value
+
+now before exiting from critical condition 
+
+consumer code prempts
+
+now process will resume producer code from line 2)
+here S=0 so operation down(0) will be failed so it will block the producer process and will switched back to consumer code
+
+consumer code will be resumed from line 3
+
+3) S=0 --> S=1
+4) empty = 5 --> empty =6
+
+
+Verifying the output
+so initially we have S=1, Empty = 5, Full = 3 ---> 5+3=8
+
+after removing or consuming 1 value we have:
+S=1, Empty =6, Full =2 ---> 6+2=8
+
+Successfull
+
+
+so here as you can see we didnt allowed producer code to run when consumer code was in critical section. In this way we prevented the race condition.
+
+*******************Mutex
+What is mutex in operating system? 
+The full form of mutex is mutual exclusion object. A mutex (mutual exclusion object) is a program object used in computer programming that allows many program threads to alternately access the same resource, such as access to a file.
+
+**INFO**: When a code is in running state it is called process and when it is in idle condition it is called program
+
+
+*************Reader-writer problem solution with Binary semaphores
+
+Let say we have a database of a railway station. Here the getting the information about the schedule of the tickets is reading the data and booking ticket and registering your information is writing the data. Following are the operations that we cannot allow at the same time
+
+R-W problem
+W-R Problem
+W-W problem
+R-R No problem
+
+So how can we avoid The above problems using binary semaphores?
+
+int rc = 0; //rc means read count
+Semaphore mutex = 1
+Semaphore  db = 1
+
+//code for reading data
+
+//code for accessing into DB
+1) down(mutex);
+2) rc = rc+1;
+3) if(rc==1) then down(db);
+4) up(mutex);
+
+// critical section
+DB
+
+//code after exiting from DB
+
+5) down(mutex)
+6) rc= rc-1;
+7) if(rc==0)then up(db);
+8) up(mutex);
+
+
+-----------------
+
+
+// code for writing into db
+9) down(db)
+DB
+10) up(db)
+
+
+****Case 1:
+R-W
+
+Reader comes reader code will execute
+
+1) mutex= 1 --> mutex=0
+2) rc = 1;
+3) true --> db=1--> db=0
+4) mutex = 0 --> mutex= 1
+
+R entered into DB
+
+now for writer:
+
+9) db=0 --> db=0
+access denied process will be blocked
+
+
+***Case 2:
+W-R
+
+
+writer will come first:
+
+9) db=1 --> db=0
+W enterd into DB
+
+
+Reader comes reader code will execute
+
+1) mutex= 1 --> mutex=0
+2) rc = 1;
+3) true --> db=0--> db=0
+process will be blocked db is already 0
+
+
+***Case 3:
+W-W
+
+
+writer 1 will come first:
+
+9) db=1 --> db=0
+W enterd into DB
+
+then writer 2 will come:
+
+9) db=0 --> db=0
+process will be blocked db is already 0
+
+****Case 4:
+R-W
+
+Reader 1 will come first:
+
+1) mutex= 1 --> mutex=0
+2) rc = 1;
+3) true --> db=1--> db=0
+4) mutex = 0 --> mutex= 1
+
+Reader 1 entered into DB
+
+Now when Reader 2 will come:
+
+1) mutex= 1 --> mutex=0
+2) rc = 1 --> rc=2
+3) false
+4) mutex = 0 --> mutex= 1
+
+Reader 2 also get entered into DB
+
+And here you can enter as many reader as you want
+
+
+Now exiting the reader 1
+5) mutex = 1 --> mutex = 0
+6) rc=2 --> rc= 1
+7) false;
+8) mutex=0 --> mutex=1
+
+1 reader removed
+
+
+
+
+***************Dining philospher problem
+Assume a round table having 5 philospher P with 5 forks F from index i 0 to 4
+Philospher first think and then pick the left his left fork then right fork and then start eating after eating he place back the left fork and then right fork
+
+There may be a condition of race condition occur when two philospher tries to access the same fork.
+so to avoid this we will use Binary Semaphore
+S0 --> 1
+S1 --> 1
+S2 --> 1
+S3 --> 1
+S4 --> 1
+
+P0 --> S0  S1
+P1 --> S1  S2
+P2 --> S2  S3
+P3 --> S3  S4
+P4 --> S4  S0
+
+NOTE: we know that wait, down and P all decrease the value of semaphore and signal, up , post and release increase the value of semaphore.
+
+//Code
+1) Thinking();
+
+2) wait(take_fork(Si))
+3) wait(take_fork(S(i+1)%N)
+
+4) EAT();
+
+5) signal(put_for(i))
+6) signal(put_for(i+1)%N)
+
+
+
+Case 1:
+Let say P0 comes first
+1) thinking
+2) S0 =1 --> S0=0
+3) S1 =1 --> S1=0
+
+EAT();
+
+during eating let say P1 comes
+
+1) thinking
+2) S1 = 0 --> S1 =0
+process will be blocked as S1 meand Fork 1 has already taken P1 cannot eat until P0 finish his food.
+
+
+Case 2:
+Let say P0 comes first
+1) thinking
+2) S0 =1 --> S0=0
+3) S1 =1 --> S1=0
+
+EAT();
+
+during eating let say P2 comes
+
+1) thinking
+2) S0 =1 --> S2=0
+3) S3 =1 --> S3=0
+
+EAT();
+
+both will be able to eat. Here you may think mutual exclusion has break here as two process get access to critical condition. The answer here is that its a special case here note that both processes are independent as forks for P2 are totally independent from forks of p0 so its fine they both can eat at the same time.
+
+
+Case 3: (Deadlock)
+Let say P0 comes first
+1) thinking
+2) S0 =1 --> S0=0
+prempt
+
+Let say P1 comes first
+1) thinking
+2) S1 =1 --> S2=0
+prempt
+
+Let say P2 comes first
+1) thinking
+2) S2 =1 --> S3=0
+prempt
+
+Let say P3 comes first
+1) thinking
+2) S3 =1 --> S4=0
+prempt
+
+Let say P4 comes first
+1) thinking
+2) S4 =1 --> S0=0
+prempt
+
+
+Now CPU will come to P0 and resumed it from line 3)
+as P0 only need fork1 to start eating but fork1 is already in used
+3) S1=0 --> S1=0
+Process will be blocked as S1 = 0
+
+then it will move to P1
+3) S2=0 --> S2=0
+Process will be blocked as S2 = 0
+
+so here for all philospher none of them would be able to eat. As all have only 1 fork in their left hand all need one other to start eating. In this case all will remain blocked and this condition is called deadlock condition.
+
+****Removing deadlock
+To remove deadlock you have to switch the code of the philospher so that instead of taking left fork first and then right fork he should pick right fork first and then left fork. In doing it so all philospher would be able to eat simulaneously except that modified philospher. He will remain blocked until rest of the 4 do not complete eating. In doing this only one philospher will be blocked not all. So we can prevent deadlock in such conditions.
