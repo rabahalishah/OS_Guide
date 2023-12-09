@@ -1,0 +1,960 @@
+*************Chapter 1**********************
+****************Operating System**************
+
+**kernal
+The kernel is a computer program at the core of a computer's operating system and generally has complete control over everything in the system. The kernel is also responsible for preventing and mitigating conflicts between different processes.
+Application <--> kernal<-->hardware
+
+********Introdcution to OS***************
+Operating system is simply a complete package of software which includes kernal and other system level component which helps a user to interact with the system hardware. In hardware we can have CPU, GPU, Storage devices, RAM and I/O devices.
+The interaction with the hardware can be direct using power shell or cmd or it can be done via softwares. Such as printing a document using word file. Here the instrcutios (system call) were given by the software that is MS word to access the hardware that is Printer to print the document.
+Operating system works on system calls such as read, open, write etc.
+
+Example of OS: Windows, Mac, linux etc.
+
+Goal of oS:
+1) Convenience: The main goal of operating system is to provide convenience to the users. If there would be no Operating system then the user must have to write program to access the hardware. Which create complexities for the user to even perform a simple and easy task.
+2) Throughput: Throughput means number of tasks perfoming per unit time. (Linux is famous for its high throughput)
+
+Functionality of OS:
+1) Resource management: Operating system is responsible for managing the resources. for example in case of server. Where thousands of users are accessing the same hardware. So in this case OS is responsible for managing the resources. OS will decide how much resources has to given to a user and once the user has done his task getting back the resources from the user.
+2) Process Management: OS is also responsible for process management. For example you wrote a code in c and you want to execute its file. Then OS will schedule your execution in CPU (CPU Scheduling). Multi-tasking or Multi-Processing. If there are multiple tasks are going on then OS will schedule them to execute them in most efficient way.
+3) Storage Management: (Hard drive) Concept of file system. (CISF common internet file system, Network file system). OS is also responsible for storage management. How th data will store in architecture of disk hardware that is also done by OS.
+4) Memory Management: RAM. Memory management is also done by RAM. As we know that RAM is limited. So OS takes the responsiblity to load the program in RAM and make sure once the program has completed it must not be remain in the RAM. And other process which is waiting to load in the RAM should not wait if RAM is free. All allocation and deallocation is managed my OS. As we know program is first load in RAm and then given to the CPU
+5) Security: The authentication process when we enter password. OS use kerberos security protocol. There are some task which can only done by admisitor. Do not allowing a normal user to perform admisitrative task is managed by OS. Moreover, as mentioned above when a process is load in RAM it is allocated with a portion of memory let say 0 to 100 and there is process 2 as p2 with memory allocation of 101 to 200 so in this case if any of the process will try to access or execute the instruction out way of its located memory slot then the process has blocked.
+
+*************Types of Operating Systems
+Batch
+Multi-programmed
+Multi-Tasking
+Real-Time OS
+Distributed
+Clustered
+Embedded
+
+**Batch OS
+These were very OS. In early ages of computer there were not PCs. Only big companies use Computers for big calculations etc. They offline store or load their programs in Punch Cards or you can say paper card or Magnetic tapes. Then they give it to the opertor. Then the operator insert this Punch card in Computer and then make batches. Batch is a set of instructions of similar job. Let say after inserting the puch card we have 3 batches and each batch contains diff. number of jobs. 1st batch is sent to the CPU and out that batch 1st job is sent to CPU for execution let say that job requires I/O device. CPU send it to I/O device for processing will wait until the process has completed during this time the CPU is Idle. He will not take the next job until the first one is executed. This was the major drawback of Batch OS.
+With time refinments were made like they introduced monitors instead of using operators (employee) so can by yourself directory insert your punch card and do your job. Such as FORTRAN and IBSYS709X (In 1960)
+
+**Multi-Programmed OS (Non-preemptive)
+The concept was to load mutliple process in the RAM and then execute each path until its completion. Here the main focus was on idleness of CPU. CPU should not be idle. But the priority of system is to execute one process completely until unless the executing tasks contains instructions which is not CPU intensive such as I/O instruction etc. In that case CPU will allow the process to go to I/O device and in that time CPU will not remain idle. It will start executing the second task. The majore draw back here is that the last process has to wait. Means we lagged in response. But we successfully eliminated the idleness of CPU.
+
+For examaple: 10 students each contains 5 questions to solve. Only one teacher which is acting as a CPU. All students are in the class. Here class is a RAM. One student will come to the teacher he will solve all 5 questions of it. then will move to the 2nd student. If student 1 wants to go to washroom or anyother task teacher (CPU) will not stop him to go. He will move to the student 2 and will start solving his 5 questions. and so on.
+
+**Multi-Tasking/ Time sharing (Preemptive)
+In such OS the CPU will give a specific amount of time to a certain task. If in that time the tasks has completely executed then well and good otherwise he will move to the 2nd task and so on. In this case CPU is not idle at all but here we have increased our response time. Now the last task will not have to wait much. He will get response fast.
+
+For Example: 10 students each contains 5 questions to solve. Only one teacher which is acting as a CPU. All students are in the class. Here class is a RAM. One student will come to the teacher he will solve only 2 questions and will move to the 2nd student and so on. On reaching to the 10th student he will come back to the 1st student and will solve other 2 and so on. But in this case every student is getting response faster.
+
+****Diff b/w preemptive and non-preemptive
+Non-Preemptive scheduling in which Process transition is from ready state to running state (will execute completey until unless program it self do not go for other instructions)
+Preemptive scheduling in which Process transition is from a running state to a ready state or from a waiting state to a ready state. 
+
+
+**Real time operating systems
+Those systems which respond immediately contains real time operating systems such as live streaming etc. There are two types of real-time operating systems such as soft OS and Hard OS. Soft Real time OS are used where time constraint is not strict such as live streaming. We can afford a little bit of delay in live streaming. But in case of defensive missiles we cannot afford delays in time. For such pursposes where time constraint is very important we use Real Time operating system.
+
+***Distributed OS
+Distributed refers to splitting a buisness into small sub-services. For example Meta distributed his database server geographically but they are connected to each other. To handle such distributed environments we use Distributed OS. They have advantage that if one system fails other can do its job.
+
+***Cluster OS
+Cluster refers to grouping of several server to make a big machine to deal a same business. They can be considered as one computer. For example supercomputer is a cluster. To deal with such systems we have Cluster OS.
+
+***Embedded OS
+OS for embbeded hardware that have only specific functionality. Such as embedded hardware of a home appliance. Microwave hardware have embedded OS only have one functionality to operate microwave oven. The embedded OS of micrwave cannot be used for embedded OS for a smart washing machine.
+
+
+***********Process State
+Its a very very important conceptual model for the understanding of user in operating systems
+There are some primary and some secondary or you can say additional states
+
+new ---> Ready ---> Running --->terminate
+
+when we create a process and stores in a Hard drive that we can say its a stable process that will be in new state. Then the LTS (Long term scheduler) bring all the tasks in the Ready state (Its a state in RAM, concept of multi-programming). Then STS (Short term scheduler) brings one process from ready state to the Running state (The running state is in CPU, where processing happens). We are taking only one process at a time in Running state as we are assuming our whole OS syllabus is on Uni OS (means one CPU) not Multi-OS.
+Once a process is completely executed in Running state it is send to the terminate state or you can say CPU dellocation. Now next task will come and so on. This is simple scenario of process state. 
+
+**Case-1: (Preempitive)
+
+new ---> Ready <---> Running --->terminate
+
+Let say 1 process was running in the running state and then system calls a VIP process that has priority then the process which was running in the CPU (Running state) will send back to the Ready state (In RAM queue) and the VIP process will start executing in Running state.
+
+or there could be a case that our CPU is running on 2 sec execution for each task. Then in this case the CPU will execute one task for 2 seconds and then will send back it to the Ready state and will execute 2nd process for 2 seconds and so on. All this transition between Running and ready state is done by STS (Short term scheduler)
+
+** Case-2: (Non-Preempitive)
+
+new ---> Ready ---> Running --->terminate
+              \        /
+               \      /
+             Waiting/Block
+ 
+
+In which task in the CPU (running state) will be execute completely until unless our process is to be processed by secondry device. Task do not come back to Ready state from running-state in case of Non-Preempitive scheduling. Here if the process is executing in the running state and the process itself requires a secondary device operation such as I/O device then in this case the process will be send in the waiting state. Here once the process is executed by the I/O device it will not be send back to running state but it will send back to the ready state then it will enter into the running state and then will be terminated. 
+
+**NOTE: The difference in transition must be noted that in case of preempitive the process is directly send back to the ready state from Running state. But in case of Non-prempitive it is not directly send back to ready state but it is coming back from waiting state.
+
+**Case-3: (Worst case, our waiting list get full)
+
+new ---> Ready ---> Running --->terminate
+              \        /
+               \      /
+             Waiting/Block (Full)
+                  |
+                  |
+                Suspend 
+
+let say we created 10 process and all process requires a secondary device for their execution then CPU will send all processes in the waiting state. Let say our waiting state get full (waiting state is also in RAM) then in this case MTS (Mid term scheduler) will send them in "Suspended State". Once there will be some space empty in the waiting list they will come in the waiting state and then again send back to Ready State (Remember once a task has entered into the waiting state or suspended it will not go back to running state but will send back to Ready state). Let say our tasks in the waiting list are taking too much time the process in the suspended state will not remain here forever but in such cases it will send back directly to the ready state.
+
+new ---> Ready ---> Running --->terminate
+         \     \        /
+          \     \      /
+           \  Waiting/Block (Full and taking too much time)
+            \      |
+             \     |
+              <--Suspend 
+
+**Case-4: (Ready State get full)
+
+        Suspend
+          |
+          | (Full)
+new ---> Ready ---> Running --->terminate
+         \     \        /
+          \     \      /
+           \  Waiting/Block (Full and taking too much time)
+            \      |
+             \     |
+              <--Suspend 
+
+in such cases the process will send to Suspended state. Once there is some space in Ready state the process is entered in Ready state and so on.
+
+Summarized and complete model
+
+                Suspend
+                   |
+                   | 
+new ---(LTS)---> Ready ---(STS)---> Running --->terminate
+         \     \        /
+          \     \      /
+           \  Waiting/Block 
+            \       |
+             \    (MTS)
+              \     |
+               <--Suspend 
+
+LTS: Long term scheduler
+MTS: Mid term scheduler
+STS: Short term scheduler
+
+*****************Linux Commands
+> ls (for list of directories)
+> "ll" or "ls -l" (for detailed list of directories)
+> sudo apt install package_name (use to install latest packages here apt means "Advance package tool manager" and sudo means "superuser do")
+
+********Working with directories
+> Man name_of_any_command (this command is used to see the manual of any thing that you will provide. e.g, "man cd" this command will give you the manual of cd command.
+In linux a folder name start with "." will be considered as hidden file. It will be disappeared in GUI. If you want to see all you files whether they are hidden or not then you can use the following comman:
+> ls -a (here -a flag is for all)
+> ls -la (here -la is a combination of two flag that is length for l and all for a)
+> ls -lah (here you will get all you files with long details and h for unit of their size like KB etc.)
+> pwd (this command is used for checking the location where we are as it stands for print working directory)
+> mkdir (this command is used for making directories)
+> cd (This command is used to change the directory. This command requires an argument as name or path of directory where you want to go. If only cd alone is executed then it will bring you     to the home directory by default)
+> mkdir -p folder1/folder2/folder3 (this command "mkdir -p" is used to create a tree nested folders in one line)
+> rmdir (this command is used to remove the directory of which name the user have provided)
+NOTE: we cannot delete a folder which is not empty
+> rmdir -p folder1/folder2/folder3 (this command "rmdir -p" is used to delete nested folders in one line)
+
+**********Working with files
+// In linux files and folder names are case sensitive.
+// In linux even a directory is considered as file. It is considered as special type of file. But yes, it is considered as a file.
+> file (this command is used to check the type of the file which you have provided in the argument.
+> touch file_name (this command is used to create empty files of which name is provided as an argument. NOTE: you can create more than one file by providing more than one names at once like >touch file1 file2 file3 (this will create 3 files))
+> rm file_name (this command is used to delete the files. You can delete more than one file at a time)
+> rm -i file_names (this commadn is to interact with the command while deleting. Like this will ask before deleting the file. For responsd "yes" for delete and "no" for ingore
+> rm -rf (here -rf means recursive force. This command can be used to delete file or folder forcefully)
+> cp file_name path newFileName (this command is used to copy files e.g > cp file1 /home/docs/ file1copied)
+NOTE: If you want to copy the file within the same directory then you do not have to provide a path you simply have to provide a new name as you cannot copy or create files with the same name within the same directory but you can do it in other directory.
+> cp -r folder_name path newFolderName (this command is used to copy directories. This will also copy the content which is in the directory)
+> mv (this command is used to move and rename a file or folder. Syntax: >mv fileName path newFilename (this will move your file to the given path and will rename it at the same time.)
+> mv fileName NewFileName (this command will only rename your file)
+
+********************Working with file Content
+> head file_name (this command is used to get the first 10 lines of the file)
+> head -5 file_name (this command will onlly bring the first 5 lines. You add any number you want from 1 to 10)
+> tail file_name (this command is used to get the last 10 lines of the files)
+> tail -5 file_name (this command will onlly bring the last 5 lines. You add any number you want from 1 to 10)
+> cat file_name (this command is used to print the full file. Here cat means concatenate. Here if you would print more than 1 file by giving each name in one line separated by spaces then it will print the contant of all files)
+> echo your_content > fileName (this command is used to create files with the provided content. Here ">" this symbol is a part of the syntax)
+> cat > fileName.extension (here cat command can also be used to create files and write content in it. After typing this command you will be get entered into writing mode. Write your content whatever you want and then to get exit of the writing mode press Ctrl + D )
+> cat filename > newFileName (cat command can also be used to rename the file)
+> more file_name (this command is also used to read the document. But this will print the file per page at a time. Like it will print let say 30% of the content then on pressing space button it will print the next 30% and so on)
+> less file_name (this command is opposite of more.)
+
+***********************System information commands
+NOTE: Why use these commands? The answer is that when you will be working with the servers then there will not be any GUI then you have to do all things with commands.
+> uptime (this command is used to check how long has been your system is running)
+> free (this command is used to check how much your memory is free and how much your memory is in use)
+> ps -A (tihs command is used to get the snapshot of current running processes)
+> df (this command give you all info about your hard disk)
+> sudo fdisk -l (this command is used to get the information about your disk partitions. Here sudo is used for administrative right. As this fdisk command cannot run without sudo)
+> lsblk (this command is used to check the list of block devices)
+> top (this command is used to display the linux processes in GUI format within the terminal)
+> htop (this command is the upgraded version of top command and it will give you a better representation of linux processes. if this command is not installed by default then you can download it by using: > sudo apt install htop)
+***************************Networking
+> ifconfig (this command is used to get the network information of your system)
+> ip or ip a (this command is used to show/manipulate routing, network devices.)
+
+***************************Linux Package Manager
+NOTE: There are some operations that linux restrict to their user to perform. In order to perform such actions sudo command is used which is used to execute the command as another user or super user
+> sudo apt update (this command will tell you about the packages which are supposed to update. This command will only tell you. This will not update your packages)
+> sudo apt upgrade (this command will upgrade your packages)
+> sudo apt search package_name (this command is used to search the packages)
+> sudo apt install package_name (this command is used to install the packages)
+> sudo apt remove package_name (this command is used to uninstall the packages)
+
+*********Text editors
+There are several text editors in linux. While working with server there may be a need to edit files. There you will have to open then in any text editor of your choice with in the terminal and then use it.
+we will learn 2 of them:
+1. Nano
+2. Vim
+
+1) Nano:
+> Nano file_name (this will simply open up the file in the terminal in insert mode. You simple have to write whatever you want and then press Ctrl+X. This will ask you to save or not. Y for yes and N for No.)
+Now you can verify your changes by using >cat file_name
+
+2)vim
+>sudo apt install vim
+>vim file_name (this will just open your file in vim editor in terminal in read mode. You wont be able to write anything as it is in read mode. To start writing you have to click "i" to enable --insert mode and then to save the changes you have to press escape first to get out of insert mode and then press 	colon ":" and write w so in short write :w and press enter.
+to get exit from vim editor write :q
+To get exit and save file in one command write :wq
+
+************Some other commands
+There three roles of a file
+User, group and other (u, g, o)
+
+And there are three position or conditions
+Read, write and execute (r, w, x)
+
+---     ---     ---
+ u       g       o
+rwx     rwx     rwx
+
+We can make combinations and peform our desired action such as
+
+>chmod r+w, r+x, x note
+Means
+User can read and write
+Group can read and execute
+Other can execute only
+
+In terms of octal notation
+r=6
+w= 4
+x=1
+
+>chmod 555 note write and execute as w+x=4+1=5
+
+Means ugo all 3 can
+
+******************System calls
+Whenever the user performs an action the action is done within the user mode. In order to perform kernal operations the user must have to use systm calls. For Example: we wrote program in C language that 2+2 = 4 here 2+2 will be considered as task in user mode. now in order to print of access the result that is 4 we have to use external libraries or system calls. Actually external library also make system calls at the end of the day. In C language the printf is a function which ultimately invoke system call to print the result on screen.
+There are several type of system calls such as:
+
+1) File Related: System calls to oper, read, write file we use open(), read(), write(), close()
+2) Device Related: System calls for accessing a device such as I/O device to perform Read, writing, reposition opertions.
+3) Information Related: System calls to get information about the system such as get PID, attributes, get system time
+4) Process Control: System calls to control the process such as abort, fork (This creates multi tasking environment by creating childs of parent process where childs performing their own tasks and parents are performing their own tasks), load, wait
+5) Process Communication: System calls where the communication b/w two process is required we use pipe() funtion etc. 
+
+There are several system calls as in windows 10 we have 700 system calls. There can be other system calls related to security etc.
+
+*******************FORK() System Call
+This system call is used to create a child process of a parent process. Always remembers the child created by fork call is exactly a clone of parent process. There is a difference between fork and threads we will discuss them later on.
+Here when we execute Fork() we either get two Ids one is 0 and other is +ve value. 0 for child and +ve value for parent process.
+
+For example we created a program in C:
+
+***
+main(){
+
+printf("Hello World!");
+}
+
+//Output: Hello World!
+
+***
+
+***
+main(){
+
+fork()
+printf("Hello World!");
+}
+
+//Output: 
+//Hello World!
+//Hello World!
+
+
+we will get two times execution as there are two process executing printf one is child and other is parent.
+
+what if we use fork two times?
+
+***
+main(){
+fork()
+fork()
+printf("Hello World!");
+}
+
+//Output: 
+//Hello World!
+//Hello World!
+//Hello World!
+//Hello World!
+
+
+here the execution will be 4 times the reason is
+
+		  p
+		  |
+   	        /   \
+   1st fork()  /     \
+              C1       P
+             / \      / \
+2nd fork()  /   \    /   \
+          C2     C1 C3    P
+
+at the end we have 4 processes. 3 Child and 1 parent so total 4 therefore, the execution will be 4 times
+            
+***3 times fork()
+main(){
+fork()
+fork()
+fork()
+printf("Hello World!");
+}
+
+//Output: 
+//Hello World!
+//Hello World!
+//Hello World!
+//Hello World!
+//Hello World!
+//Hello World!
+//Hello World!
+//Hello World!
+
+//8 times execution. 7 by child and 1 by parent
+                        p
+                        |
+		    /       \
+		   /         \
+   	          /           \
+   1st fork()    /             \
+                C1              P
+              /    \           / \
+2nd fork()   /      \         /   \
+            C2       C1       C3     P 
+            / \      / \     / \    / \                
+3rd fork() /   \    /   \   /   \  /   \
+         C4     C2 C5    C1 C6  C3 C7   P          
+
+here we have 7 childs and 1 parent therefore the execution was 8 times
+
+Conclusion:
+
+no of process = 2^n  (where n is the number of times fork command has used)
+no of child process = (2^n)-1  ((where n is the number of times fork command has used)
+no of parent process = 1 (this will always be 1)
+
+
+Example question:
+#include<studio.h>
+#include<unistd.h>
+int main(){
+if(fork() && fork())
+fork();
+printf("hello world!");
+}
+  
+
+output?
+
+//output:
+//hello world!
+//hello world!
+//hello world!
+//hello world!
+
+
+Explanation
+we know that child process returns 0 and parent process returns a +ve value
+
+so let say after if the first fork return a 0 so due to AND operator if condition would be false due to 0 so it will execute printf. So We will get 1 hello world.
+Now for second case when the first fork returns +ve value then we will check for the second fork let say the second fork returns 0 then again we will get if condition false as 0 && 1 = 0 so this will again execute printf now we have total 2 hello world.
+Now the 3rd case when then 1st and 2nd fork both return +ve number then if condition would become true then it will execute the 3rd fork which will create 2 process 1 child and 1 parent which is already present so these two processes will execute printf and we will get two more hello world so in total we will get 4 hello world.
+(0 && 0) 1 hello world
+(1 && 0) 1 hello world
+(1 && 1) 2 hello world
+
+total 5 hello world
+
+Additonal info: In case of || OR operator we will get 5 hello world.
+(0 OR 0) 1 hello world
+(1 OR 0) 2 hello world
+(0 OR 1) 2 hello world
+(1 OR 1) 2 hello world
+
+
+total 5 hello world
+
+*************User mode VS kernel Mode
+User Mode Vs Kernel Mode
+
+In CPU there are generally two modes. One is User mode that is of 1 Bit and othe ris Kernel mode that is of 0 bit.
+
+When a user execute a process such as opening and using application such as text editor then the processor will act as user mode. But when the user wants to access the operation that is hardware based such as accessing HD or I/O devices then system will generate a system call. Such as read() etc. Then the processor will shift the mode from user to kernel. Once the task has completed it will return to user mode.
+
+The important point to note that why the processor is shifting mode. The reason is to manage the resource we cannot give all access to user to directly access all the resources there must be something in between that is OS and the mode that can perform such task is Kernel mode so we can say OS helps the processor to shift between user and kernel mode. 
+
+2+2=4 in C language is a user mode task
+
+But printf(2+2) will perform in kernel mode as it requires screen to display text.
+
+Bank example: user go to the bank and to.access money he gives the cheque to the accountant here accountant is kernel who have access to the locker. Account will grap money from locker and give to the user.
+
+**************Process VS Threads
+It would be better to say MultiProcessing vs MultiThreading
+
+Process are generally termed as heavy processes. 
+They are invoke by system calls. Such as fork().
+System calls is must in processes.
+When a system call is made. CPU creates a clone of the process. Means each clone would have its owm stack, register, data and code. There will be multiple copies. This clone is also refred as child process. 
+Parent and child components are completely independent. Blocking one process will not effect the blocking of chlid process (blocking means accessing HD or I/O devices etc.)
+Context switching is very slow. (As we kmow in multiprocessing we run a process for a certain period of time and then switched to the other process and so on) here while switching the values must be store in PCB (Process control Block) for the process one before shifting to the second process as in process we have completely independent clones. 
+
+Threads:
+Threads are termed as user level process means kernel have no idea about them. Application is responsible for creating threads not kernel.
+As theh are user level operation so they do not involves any system calls.
+In threads clones are not created. Only threads are created where they share same data and code but for the same data and code we have multple threads which have their own register and stack.
+Since they are sharing data not creating copies to switching context is very fast.
+Drawback, one thread is block the whole process will.be blocked. The reason is that kernal consider them always as one process no matter how many threads are there. Therefore blocking one thread will block the whole process.
+
+Processes are dependent in threads.
+
+*************User level threads VS kernel level threads
+1. User level thread Vs Kernal level thread
+2. User level threads are the threads that are managed by the user or you can say managed by application
+3. These threads share data and code. Each thread have its own separate register and stack.
+4. Context sharing is very fast as data and code are same
+
+Kernel lvl threads
+
+1. These are the threads which are managed by OS.
+2. They also share data and code
+3. But they are slower in context switching as compared to user level threads.
+4. They are independent threads as process is managed by the OS so it do not block when one thread is blocked.
+
+You can simply assume kernel lvl threads as process.
+
+Time taken by the process:
+
+Process context switiching time > kernel lvl threads context switching time > user lvl threads context switching time.
+
+
+*************Chapter 2**********************
+***************Process Scheduling Algorithms (Or CPU scheduling)
+There are two terms that you must be familiar with before discussing scheduling algorithm
+1. Premptive (The process in the running state can be send back to ready state to execute it in future. Concept of multiprocessing)
+2. Non-premptive (The process in the running state do not send back to ready state. It will be completed unless the task itself requires a system call such as accessing I/O device.)
+
+Premptive 				|		Non-Premptive
+1. SRTF (Shortest remaining time first)	|	 FCFS (First come First Serve)
+2. LRTF (Longest remaining time first)	|	 SJF (Shortest Job First)
+3. Round Robin				| 	 LJF (Longest Job First)
+4. Priority Based			| 	 HRRN (Highest Response Ratio next)
+					| 	 Multilevel Queue
+					|	 Priority Based
+
+
+**************Important terminologies in process scheduling
+Arrival Time: The time at which the process enters into the ready state.
+Burst Time (Duration): The time taken by the process to get executed in CPU.
+Completion time: The time at which the process execution get completed.
+Turn around time (Duration): it is the total time taken  by the process from ready state to its completion, Formula =  {Completion Time - Arrival Time}
+waiting time (Duration): The time taken by the process to wait. Idle time. Formula = {Turnout Time - Burst Time}
+Respomse Time: The time at which the process get a response {The time at which process get the cpu for the first time - Arrival Time}
+
+
+Example: Let say a person enters a bank at 11am and get out from the bank at 12pm. He took only 15mins to deposite his payment. Rest of the time he had to wait in a queue.
+Here,
+Arrival Time (AT) = 11am
+Burst Time (BT): 15 mins
+Completion time (CT)= 12pm
+Turn around time (TAT) = {12pm - 11am} = 1hr or 60 mins
+Waiting time (WT) = {60 mins - 15mins} = 45 mins
+Response time (RT)= {11:45 - 11am} = 45mins
+
+**NOTE**: In case of non-premptive Wait time and response time would be same.
+
+
+**Context Switching**:  means that saving the values of current process in PCB (Process control block) and sending it back to the ready state and add the new process. Why we are saving the current running process in PCB? The answer is that when we again run it in the future so we do not have to run it from the start we just have to resume it from where we have pause it. PCB will help us in doing it so. As PCB carries all the information about the process.
+
+************************Example Problem FCFS Algorith (non-premptive):
+Steps to follow:
+Criteria will be arrival time. Means we will take decisions on the basis of arrival time.
+1) FCFS with non-premptive is very easy. 
+2) Simply make a gant chart starting with 0 arrival time.
+3) Simply add the processes on the basis of their arrival time and run the process complete once the process has added.
+4) The would be no clash in FCFS. If any then the one who came first would be executed no matter how long its burst time is.
+5) Add process, completely execute it till its burst time and then again check what next task is coming on the completion of previous task if yes then add it otherwise idle the processor.
+(This is draw back of FCFS algo as cpu remains idle at some points)
+
+Q: Data:
+
+Process no.	| Arrival Time  | Burst Time
+p1		| 0		| 2
+p2		| 1		| 2
+p3		| 5		| 3
+p4		| 6		| 4
+
+Calculate: Completion Time, Turn around Time, Wait time, Response Time, Avg. TAT and Avg. WT = ?
+Mode: Non-premptive
+Criteria: Arrival Time
+Algorithm: FCFS (firt come first serve)
+
+Solution:
+The best way to do it make a Gant chart: 
+
+ P1             P2  N/A  P3   p4
+_____________________________________________
+0              2   4    5    8    12 
+^              ^
+Time           Time at which
+at which       p1 completed and
+the process    p2 got the CPU
+get the CPU
+
+
+
+TABLE:
+Process no.	| Arrival Time  | Burst Time    | TAT		| Wait Time	| Response Time
+p1		| 0		| 2		| 2-0 = 2	| 2-2= 0	| 0-0 = 0
+p2		| 1		| 2		| 4-1 = 3	| 3-2= 1	| 2-1 = 1
+p3		| 5		| 3		| 8-5 = 3	| 3-3 = 0	| 5-5 = 0
+p4		| 6		| 4		| 12-6 = 6	| 6-4 = 2	| 8-5 = 2
+
+
+Avg. TAT = (2+3+3+6)/4 = 14/4 = 3.5
+Avg. WT = (0+1+0+2)/4 = 0.75
+
+P1 arrived at 0 and get the CPU at 0 and it has BT of 2 so it completed at 0 + 2 = 2
+During 0 to 2. The P1 had arrived in the ready state or RAM at 1 so next it will be executed. So after waiting for 1 P2 get the CPU at 2 and it has BT of 2 so it completed at 4.
+During 2 to 4 none of the process arrived only p2 get executed. Then at 5 p3 came into the memory and get the CPU at 5 and has BT of 3 so it competed at 8.
+DUring 5 to 8 p4 has arrived in the ready state at 6 and has to wait 2 and got the CPU at 8 and it has BT of 4 so it completed at 12.
+
+
+
+
+
+**************************************Example Problem SJF Algorithm (non-premptive):
+Steps to follow
+Here criteria would be burst time. Means we will take decisions on the basis of burst time.
+1) SJF with non-premptive is very easy
+2) Make a gant chart starting with 0
+3) Add the process which have shortest burst time and run it completely.
+4) Once it ran completely check for other task which are coming on its completion or during its execution.
+5) Compare the burst time of coming task with the task who already have arrived in ready state. pick the shortest one and completely execute it.
+
+Q: Data:
+Process no.	| Arrival Time  | Burst Time
+p1		| 1		| 3
+p2		| 2		| 4
+p3		| 1		| 2
+p4		| 4		| 4
+
+Calculate: Completion Time, Turn around Time, Wait time, Response Time= ?
+Mode: Non-premptive 
+Criteria: Burst Time
+Algorithm: SJF (Shortest Job first)
+
+Solution:
+The best way to do it make a Gant chart: 
+
+ N/A   P3   P1    p2   P4
+_____________________________________________
+0   1     3    6     10  14
+
+
+
+
+TABLE:
+Process no.	| Arrival Time  | Burst Time    | TAT		| Wait Time	| Response Time
+p1		| 1		| 3		| 6-1 = 5	| 5-3= 2	| 3-1 = 2
+p2		| 2		| 4		| 10-2 = 8	| 8-4= 4	| 6-2 = 4
+p3		| 1		| 2		| 3-1 = 2	| 2-2 = 0	| 1-1 = 0
+p4		| 4		| 4		| 14-4 = 10	| 10-4 = 6	| 10-4 = 6
+
+
+Here the concept is that the process having shortest burst (execution) time will be executed first. Since its non-premptive response time would be same as wait time.
+P1 and P3 both arrives at 1 but p3 will be executed first as it has shorter burst time. It will take 2 burst unit time so it will completed at 3 unit time. During 1 to 3, P2 comes and p1 is already in ready state. now we will have to decide between p2 and p1. Since p1 have short burst time p1 will be executed first and will be completed at 6. Now till 6 p2 is already in ready state and p4 has came at 4. Now here p2 and p4 both have same burst time. So which would get execute first? The one who arrived 1st. So the arrival time of p2 is less than the arrival time of p4 so we will go with p2 and then p4.
+
+
+**IMPORTANT NOTE**: Always look for arrival time first. In case there are more than one process arrived at the same time than you have look for other factors such as burst time etc. Depends on the algorithm you are using. And in case of non-premptive Once the task has started executing it will be completely executed till its burst time. 
+
+
+
+
+**************************************Example Problem SRTF Algorithm (or SJF with premptive):
+Steps to follow:
+Here criteria would be burst time. Means we will take decisions on the basis of burst time. But we will not completely run the process at once as it is premptive. 
+1) SRTF or SJF with premptive is tricky
+2) Make a gant chart starting with 0
+3) Check who have arrived at 0. If yes, then run it only for 1 unit time.
+4) After one unit update the burst time of process 1 and check which next process is coming.
+5) Compare the values of coming process with the one who already is in running state. If the coming process have short burst time than the one which is already in the running state then   switch the context and add the coming one and send back the running process into the ready state. And so on.
+7) In short run 1 unit time and compare values, pick the shortest one and update burst time
+
+Q: Data:
+Process no.	| Arrival Time  | Burst Time
+p1		| 0		| 5
+p2		| 1		| 3
+p3		| 2		| 4
+p4		| 4		| 1
+
+Calculate: Completion Time, Turn around Time, Wait time, Response Time= ?
+Mode: premptive 
+Criteria: Burst Time
+Algorithm: SRTF (SJF with premptive)
+
+Solution:
+The best way to do it make a Gant chart: 
+Process no.	| Arrival Time  | Burst Time
+p1		| 0		| 5 --> 4 --> 3 --> 2 --> 1 --> 0
+p2		| 1		| 3 --> 2 --> 1 --> 0
+p3		| 2		| 4 --> 3 --> 2 --> 1 --> 0
+p4		| 4		| 1 --> 0
+ 
+  p1  p2   p2   p2   p4  p1  p1  p1  p1  p3   p3  p3  p3
+__________________________________________________________
+0   1    2   3    4   5   6    7   8   9    10  11  12  13
+
+In case of SRTF we execute each process for only 1 unit and then compare its remaining burst time with rest of the processes who have arrived during that interval. Since it premptive so process can be send back to its ready state from running state after getting 1 time unit executed. After each time execution the process will be compared with the burst time of the process in ready state and then the one having shortest will executed 1 unit time and its is compare with rest of the processes with their updated burst time and so on.
+
+
+TABLE:
+Process no.	| Arrival Time  | Burst Time    |Completion time| TAT		| Wait Time	| Response Time
+p1		| 0		| 5		|     9		| 9-0 = 9	| 9-5= 4	| 0-0 = 0
+p2		| 1		| 3		|     4		| 4-1 = 3	| 3-3= 0	| 1-1 = 0
+p3		| 2		| 4		|    13		| 13-2 = 11	| 11-4 = 7	| 9-2 = 7
+p4		| 4		| 1		|     5		| 5-4 = 1	| 1-1 = 0	| 4-4 = 0
+
+
+***************Round Robin (premptive)
+Steps to follow:
+Here criteria would be Time Quantum. We will run the process only for given time quantum unit and the switch the context.
+1) Round Robin is very tricky
+2) Make two gant charts one will for ready state and other for running state. we will use only running state gant chart for calculations but in Round robin due to context switching we will have to make ready state queue
+3) Ok so first add a process in ready queue at 0 and then add it in the running state. 
+4) Run this process for only till the given time quantum unit. And then check how many process has already come in the ready state till its completion and check after updating its burst time whether the current process has completed or not? If yes then add it back in ready state (switch the context). While switching always remember that the process which is going back to the ready state would come at the end of process which are already in ready state. Now update their burst time. And pick the one which is next in the ready no matter how long their burst time is. Always fill ready state according to the arrival time of processes.
+5) Again run it till the given time quantum and then repeat the process.
+
+
+Q: Data:
+Process no.	| Arrival Time  | Burst Time
+p1		| 0		| 5
+p2		| 1		| 4
+p3		| 2		| 2
+p4		| 4		| 1
+
+Given Time Quantum: 2
+Calculate: Completion Time, Turn around Time, Wait time, Response Time, no. of context switching= ?
+Mode: premptive 
+Criteria: Burst Time
+Algorithm: ROund Robin
+
+Solution:
+The best way to do it make a Gant chart: 
+Process no.	| Arrival Time  | Burst Time
+p1		| 0		| 5 --> 3 --> 1 --> 0
+p2		| 1		| 4 --> 2 --> 0
+p3		| 2		| 2 --> 0
+p4		| 4		| 1 --> 0 
+ 
+	  	 p1 p2 p3 p1 p4 p2 p1
+Ready State:	__________________________________________________________
+		0     2       4  
+
+	  	 p1 | p2 | p3 | p1 | p4 | p2 | p1
+Running State:	__________________________________________________________
+		0   2   4     6    8    9    11   12
+
+"|" = context switched. 
+count "|" to check the no. of context switching.
+
+NOTE: here we run our p4 only 1 unit but the given time quantum was 2. So its fine. The reason is that p4 only have 1 burst time. Time quantum is applicable only for those process which have burst time greater than the given time quantum.
+
+TABLE:
+Process no.	| Arrival Time  | Burst Time    |Completion time| TAT		| Wait Time	| Response Time
+p1		| 0		| 5		|    12		| 12-0 = 12	| 12-5= 7	| 0-0 = 0
+p2		| 1		| 4		|    11		| 11-1 = 10	| 10-4= 6	| 2-1 = 1
+p3		| 2		| 2		|     6		| 6-2 = 4	| 4-2 = 2	| 4-2 = 2
+p4		| 4		| 1		|     9		| 9-4 = 5	| 5-1 = 4	| 8-4 = 4
+
+No. of context switing = 6
+**Context Switching**:  means that saving the values of current process in PCB (Process control block) and sending it back to the ready state and add the new process. Why we are saving the current running process in PCB? The answer is that when we again run it in the future so we do not have to run it from the start we just have to resume it from where we have pause it. PCB will help us in doing it so. As PCB carries all the information about the process. In short transition from p1 to p2 on running state queue.
+
+
+
+**************************************Example Problem Priority Scheduling Algorithm (premptive):
+Steps to follow:
+Here criteria would be Priority number. Means we will take decisions on the basis of given pririty number for each process. But we will not completely run the process at once as it is premptive. 
+1) Priority with premptive is easy
+2) Make a gant chart starting with 0
+3) Check who have arrived at 0. If yes, then run it only for 1 unit time.
+4) After one unit update the burst time of process 1 and check which next process is coming.
+5) Compare the priority value of the coming process with the one who is already in running state. If the coming process have greater priority than the one which is already in the running state then switch the context and add the coming one and send back the running process into the ready state. And so on.
+7) In short run 1 unit time and compare priority values, pick the higher priority one and update burst time.
+
+Q: Data:
+Priority No. |	Process no.	| Arrival Time  | Burst Time
+10	     |	p1		| 0		| 5
+20	     |	p2		| 1		| 4
+30	     |	p3		| 2		| 2
+40	     |	p4		| 4		| 1
+
+Calculate: Completion Time, Turn around Time, Wait time, Response Time= ?
+Mode: premptive 
+Criteria: Burst Time
+Algorithm: Priority
+
+Solution:
+The best way to do it make a Gant chart: 
+Priority No. |	Process no.	| Arrival Time  | Burst Time
+10	     |	p1		| 0		| 5 --> 4 -->0
+20	     |	p2		| 1		| 4 --> 3 --> 0
+30	     |	p3		| 2		| 2 --> 1 --> 0
+40	     |	p4		| 4		| 1 --> 0
+ 
+  p1  p2   p3    p3   p4    p2   p1
+__________________________________________________________
+0   1    2    3     4    5     8   12
+
+Priority No. | Process no.	| Arrival Time  | Burst Time    |Completion time| TAT		| Wait Time	| Response Time
+10	     | p1		| 0		| 5		|    12		| 12-0 = 12	| 12-5= 7	| 0-0 = 0
+20	     | p2		| 1		| 4		|    8		| 8-1 = 7	| 7-4= 3	| 1-1 = 0
+30	     | p3		| 2		| 2		|    4		| 4-2 = 2	| 2-2 = 0	| 2-2 = 0
+40	     | p4		| 4		| 1		|    5 		| 5-4 = 1	| 1-1 = 0	| 4-4 = 0
+
+
+NOTE: In case we have two process having same priority then go for their arrival time. FCFS. If arrival time is also same then go with their ID like p1 first then p2 and so on.
+Higher the priority number, Higher will be the priority.
+
+**************************************Example Problem Priority Scheduling Algorithm (premptive) with mix burst time:
+Steps to follow:
+Here criteria would be Priority number. Means we will take decisions on the basis of given pririty number for each process. But we will not completely run the process at once as it is premptive. 
+1) Priority with premptive is tricky
+2) Make a gant chart starting with 0
+3) Check who have arrived at 0. If yes, then run it only for 1 unit time.
+4) After one unit update the burst time of process 1 and check which next process is coming.
+5) Compare the priority value of the coming process with the one who is already in running state. If the coming process have greater priority than the one which is already in the running state then switch the context and add the coming one and send back the running process into the ready state. And so on.
+7) In short run 1 unit time and compare priority values, pick the higher priority one and update burst time.
+8) also here I/O time would be given during the I/O time of one process other process can be executed depending upon their arrival and priority.
+
+Q: Data:					  Burst Time
+Priority No. |	Process no.	| Arrival Time  | CPU   I/O   CPU
+2	     |	p1		| 0		| 1      5     3     
+3	     |	p2		| 2		| 3      3     1
+1	     |	p3		| 3		| 2      3     1
+4	     |	p4		| 3		| 2      4     1
+
+Calculate: Completion Time of p1, p2, p3, p4 and CPU Idleness ratio and CPU usage ratio = ?
+Mode: premptive 
+Criteria: Burst Time
+Algorithm: Priority
+Here lower the number higher the priority (Given)
+
+Solution:
+The best way to do it make a Gant chart: 
+Priority No. |	Process no.	| Arrival Time  | CPU      	   I/O         CPU
+2	     |	p1		| 0		| 1-->0           5-->0     3-->2--1-->0     
+3	     |	p2		| 2		| 3-->2-->1-->0   3-->0     1-->0
+1	     |	p3		| 3		| 2-->1-->0       3-->0     1-->0
+4	     |	p4		| 3		| 2-->1-->0       4-->0     1-->0
+ 
+                        <----I/O of P3-->             <----I/O of p2--->
+  p1  N/A  p2   p3   p3   p2   p1   p1   p3   p1   p2   p4    p4   N/A   p2    N/A N/A  p4
+___________________________________________________________________________________________
+0   1    2    3    4    5    6    7    8    9    10   11    12   13   14     15   16  17   18
+    <-------I/O of P1-------->	                                  <-------I/O of p4--->
+
+Priority No. |	Process no.	| Arrival Time  | CPU      	   I/O         CPU 	  | Completion Time
+2	     |	p1		| 0		| 1-->0           5-->0     3-->2--1-->0  |   10
+3	     |	p2		| 2		| 3-->2-->1-->0   3-->0     1-->0	  |   15
+1	     |	p3		| 3		| 2-->1-->0       3-->0     1-->0	  |   9
+4	     |	p4		| 3		| 2-->1-->0       4-->0     1-->0	  |   18
+
+CPU Idleness ratio = (no. of idle units)/total units
+So
+CPU Idleness ratio = 4/18 = 0.22 
+
+CPU usage ratio = (no. of usage units)/total units
+CPU usage ratio = 14/18 = 0.77
+
+NOTE: In case we have two process having same priority then go for their arrival time. FCFS. If arrival time is also same then go with their ID like p1 first then p2 and so on.
+Higher the priority number, Higher will be the priority.
+
+
+***************Multi-level queue
+Here the concept is that when we have different nature of process then why there is only one ready state for all these process. They should have their own ready queue and they should be executed on the basis of best suitable algorithm.
+
+Highest priority --> System processes (such as inturption etc.) ----------SJF--------------|
+											   |			
+Medium priority --> Inerative processes (such as application like VS code etc.)--SRTF---->CPU
+                                                                                           ^
+											   |
+lowest Priority --> Batch process (Background processes)--------------------FCFS------------
+
+
+Drawback: The problem here is that if there are alot of system processes then interactive processes and batch process will have to wait long for their turn they would enter into starvation zone. To solve this problem we use multi-level feedback queue.
+here **starvation** means that when highest priority process are coming one by one due to which low priority processes are not getting their turn to execute.
+
+**************Multi-level feedback queue
+Here the concept is that the lower priority process will send a feedback to change its priority. So we change its priority or change its ready queue with time so that it can get some execution instead of going into starvation
+
+************************Chapter 3
+*****************Process synchronization, Process types, race conditions
+
+Types of process
+There are two types of process
+1) Cooperative processes (Those process which do share something such as variable, memory, code or resource such as I/O devices are called cooperative processes. Here execution of one process can affect the output of other process)
+2) Independent Processes (Those process which do not have anything common in between them they are totally independent. The execution of one process will not affect the execution of other process)
+
+
+Q: Why do we need process synchronization? 
+The answer of this question can be understand very clearly by seeing an example. But just do remember in case of cooperative processes where processes are sharing resources, process synchronization is very crucial as it can create a problem. Let see how:
+
+P1			| P2
+int shared = 5; 	| int shared = 5;      
+int x = shared;		| int y = shared;
+x++;			| y--;
+sleep(1);		| sleep(1);	
+shared = x; 		| shared = y;
+
+Let say we have these two cooperative processes as they are sharing a single variable called "shared". We ran the process P1 first.
+
+//In P1
+// initialized share as 5
+// assign 5 to x
+// incrementing the value of x.
+//now x = 6
+// pausing the process for 1 sec using sleep(1) command
+
+Here will the CPU will be idle? NO, The CPU will switch the context. Means it will save the information of process 1 in PCB (process code block) and will start executing the process P2
+
+//In P2
+// initialized share as 5
+// assign 5 to x
+// decrementing the value of x.
+//now x = 4
+// pausing the process for 1 sec using sleep(1) command
+
+Now CPU will again switched the context to P1
+(Resuming p1)
+//In p1
+// now shared = 6
+//terminate
+
+Now CPU will terminate the process 1 and will move to p2
+(Resuming P2)
+//In p2
+// now shared = 4
+//terminate
+
+
+We will get either 6 or 4.
+What do you think. Is this true?
+NOOO!!! The reason is that we had common variable. We added 1 in X and then subtracted 1 from X we should have the same answer but we got two different answers which were wrong. This condition is called race condition where two answers are in race to win. Although both are wrong.
+So in order to avoid such race conditions for cooperative processes the process synchronization is very important.
+
+
+********************Producer and consumer example of process synchronization
+//Consumer Code				| //Producer code
+void consumer(){			| int count = 0;
+int itemC;				| void produce(void){
+while(true)				| int itemP;	
+{					| while (true){
+while(count == 0);			| produce.item(itemP)
+itemC = Buffer(out);			| while(Count == n)
+out = (out+1)mode(n);			| Buffer[in] = itemP
+count = count -1			| in = (in + 1) modn;
+process.item(itemC) 			| count = count + 1;
+}					| }
+}					| }
+
+
+
+assume buffer as a space in memory. The logic here is simple. The producer code produces or add an item in the buffer. And consumer code extract, remove or consumer that item. If producer code runs first and then consumer code we will get every thing fine. But the problem will create where when there might be interuption in incrementing the count variable.
+
+let say the producer code ran the code for 3 times. Means it has added 3 items in the buffer. At index 0, 1 and 2. When producer code tried to add 4th item at index 3 in the buffer when it reaches the line "count = count + 1". here CPU runs the instructions by dividing it into microinstructions such as for count= count +1 ---> 
+I1. current count value will be loaded in Register, (CPU uses register to increase its efficiency) (here current value is 3 as there are 3 items in the buffer)
+I2. Current value will be incremented.
+I3. update value will be assigned to count variable.
+
+assume that by any means in above three steps the execution prempt before point 3. Means the value has incremented to 4 but not assigned and 4th item has added in the list. All the information will be stored in PCB and context will be switched to the consumer code. The consumer code will remove the first item. And count will be updated to 2 as one item has been removed out of 3. And again when the CPU reaches at 
+"count = count -1"
+I1. current count value will be loaded in Register, (here current value is 3 but there are 4 items in the buffer. Current value could not update due to premption in producer code.)
+I2. Current value will be incremented.
+I3. update value will be assigned to count variable.
+and before reaches point 3 the code has prempt. Now here the value of count has decremented to 2 but not assigned. All info will be saved PCB and context will be switched. 
+Now consumer process will be resume.
+
+Recall: we left producer code with count value incremented to 4 but not assigned and at that time there were 4 items in the buffer. Now count value will be assigned to 4 to complete the producer code. 
+wait wait wait!!! How many items are there in buffer now? The answer is 3 and what our count is showing due to producer code is 4.
+Now once this process will be terminated the consumer code will resume. Where the count value has been decremented to 2 and now it will be assigned to count and process will be terminated. Now count will have value of 2 but there are 3 items in buffer list.
+Again we have reached the race condition. Dont forget that these processes are cooperative process as they are sharing a common variable count. Since there were no process synchronization between them therefore, This race condition happened.
+
+So the process flow which can create race condition is: producer I1, I2, Consumer, I1, I2, Producer I3, consumer I3
+
+***********************Printer-spooler problem | process synchronization
+I1. Load Ri , m[in]
+I2. store SD[Ri], "File_name"
+I3. Increment Ri
+I4. Store m[in], Ri
+
+
+This is a spooler code. Printer is a very slow device its take instructions one by one and execute one by one. Printer before printing the documents stores them in a spooler directory.
+It simply load the index in register and assign it to Ri (register index), Then take the file name and store it into the spooler directory at the Ri and then after storing, It increment the Ri to place the next coming file in next index.
+
+Let assume there are 4 files stored in spooler directory. let say there come two process at the same time p1 and p2 having file name f5.doc and f6.doc. 
+Process 1 ran first.
+// In spooler code for process 1
+Currently there are 4 files at index, 0 1 2 3 and current value for index is 4 as 5th place is empty.
+Index 4 will be loaded and f5.doc will be stored at the 4 index in spooler directory.
+Now Ri has incremented as in 3 line of spooler code. Before assigning the incremented index that is 5 the process 1 prempt. All information get stored in PCB and context get switched,
+Now process 2 will start executing. Remember the Ri is 4 as it was only incremented but not assigned so the index has not updated. here the file6.doc will also be stored in the 4th index as it was not updated. So it means f5.doc will be overwrite and f6.doc will be store. now the Ri incremented to 4 and stored in I4 line of p2 process and p2 will be terminated.
+Now p1 will be resumed and it assign the Ri index to 5 and will terminated.
+
+
+here the big and serious problem has come that is Lose of data. We didnot implemented process synchronization and this happened.
+
+The process followed which create this lose of data condition is: P1, I1, I2, I3, prempt, P2, I1, I2, I3, I4 , P1 I4
+
+
+**************Critical Section and process synchornization mechanism
+When there are two process and they have a common section of code which can effect the each other processes is called critical section. In general every program have two section. One is independent and other is critical section. 
+
+In order to prevent race conditions and loss of data we implement process synchronization.
+Every process synchronzation mechanism should follow 4 rules. Process sychnronization mechanism is nothing just a piece of code which we write at entry point and exit point of critical section.
+
+Primary:
+1) Mutual Exclusion: Means if one process is enter in critical condition then p2 will not be allowed to enter into critical section and vice versa. We write a code at the entry section of critical section. If one process is in the critical section the entry section of p2 process wont allow it to enter the critical section until p1 get terminated. This should be followed.
+2) Progress: This is a condition in which code of one program do not allow the other process to enter into the critical section. Neither that process is going to critical section nor it is allowing other processes to get enter. This should not be the case in you process synchronization mechanism or code.
+
+Secondary:
+3) Bounded wait: Let say p1 enters into the critical section and then get out and then again get enter into the critical section and so on. It do not allowing the turn of process 2. Process 2 will remain waited for ever. This should be the case in you process synchronization mechanism or code.
+4) No assumption related to hardware: Your code should not be dependent on the hardware such as it will work on linux and wont work on windows. It should not be the case.
+
+
