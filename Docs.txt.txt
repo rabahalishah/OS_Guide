@@ -1487,3 +1487,263 @@ so here for all philospher none of them would be able to eat. As all have only 1
 
 ****Removing deadlock
 To remove deadlock you have to switch the code of the philospher so that instead of taking left fork first and then right fork he should pick right fork first and then left fork. In doing it so all philospher would be able to eat simulaneously except that modified philospher. He will remain blocked until rest of the 4 do not complete eating. In doing this only one philospher will be blocked not all. So we can prevent deadlock in such conditions.
+
+
+****************Deadlock and its necessary conditions
+********Deadlock condition*****
+
+Its a condition in which two or more processes wait for happening the event but the event will never happen. 
+
+All processes will remain in hold and wait state for execution and will never be execute
+
+Example:
+Suppose you go to the bank for opening an account.
+The accountant say deposite some money and then we will open your account.
+
+But you are saying that 1st open my account then I will deposite some amount.
+
+Now you both will remain stuck. He wont open until you pay and you wont pay until he opens your account.
+
+Example 2
+P1<--R1 (P1 holding Resource R1)
+
+P2<--R2 (P2 holding resource R2)
+
+But 
+
+P1-->R2 (P1 needs R2 for execution)
+
+P2-->R1(P2 need R1 for execution)
+
+P1 wont release R1 until he get R2 and get executed
+
+And same case for p2 
+P2 will not release R2 until he get R1 and get executed
+
+Now both are in never ending wait loop.
+
+
+Necessary conditions for creating Dead condition:
+
+1) Mutual exclusion (if one process is holding a resource other cannot hold the same resource)
+2) No premption (there should not be the case that one process holding a resource prempt itself for any reason. Otherwise the other process waiting for Resource 1 will get that resource and will get executed and deadlock will break this should not be the case)
+3) Hold and wait (processes should always remain in that state of hold their resources and waiting for the other resources)
+4) Circular wait (Process should form a circular wait. E.g if there are n processes then p1 should be dependant on the resourse of last process that is Pn
+
+
+***************RAG (Reasource Allocation Graph)
+This graph is the best way to represent the state of the system. This graph will tell you that whether the deadlock exists in the process or not.
+There are some conventions that you have to keep in mind.
+
+There are two things
+process vertex and resource vertex.
+process vertex is repesented by Pi  in circle and resource vertex are of two type one is single instance vertex and other is multinstacne vertex.
+1) singlex instance (means CPU, moniter) is represented by a dot in a square.
+2) multinstance (register in CPU) is represented by multi dots in a square.
+
+Example:
+P-->R means process is looking/waiting/requesting for a resource to get executed.
+P<--R means process is holding/taken/Assigned a resource.
+
+P1<--R1
+|    |
+|    |
+R2-->P2
+its a cycle and deadlock exists here. As P1 holding R1 looking for R2
+P2 holding R2 looking for R1. None of them will release their resource and none of them will be able to get a resource to get executed.
+
+Example2:
+p1<--R1
+P2<--R2
+P3-->R2
+P3-->R1
+
+there is no deadlock as there is no cycle hold.
+
+
+NOTE:
+In case of single instance resource. The RAG cycle hold always have deadlock.
+In case of single instance resource. If there is no RAG cycle then there will be no deadlock.
+In case of multi instance resouce. Is there be always a deadlock? Answer is NO.
+
+Finite waiting time for execution of a process called starvation (no matters how long the time is but until unless it is a finite number it will be termed as starvation)
+
+Infinite waiting time for execution of a process called deadlock.
+
+
+**************Deadlock handling and preventions
+There are 4 methods which we can implement to handle the deadlock condition
+
+1) Deadlock ignorance or Ostrich method: This method simply says that ignore the deadlock when it occurs. Like whenever our phone got hanged what we all do? We simply restart our systems. Programmers says that since deadlock is a very very rare condition to occur and if we write code to handle deadlock it will reduce the problem. So simply ignore it. 
+2) Deadlock prevention : Since we all know to have a deadlock condition the process must be mutual exclusive (non-shareable), no premption, hold and wait, circular wait. If any one or all of the condition becomes false we can prevent the deadlock. But its practically not a good solution. 	a) Making Mutual exclusion false condition: As we have to make all our system shareable to make mutual exclusion a false condition. 
+	b) Making no premtion a false condition: How can we make a device shareable such as printer?.  Like we have to allow all the processes 	  	   to get prempt. We cannot allow premption for all process to make the "no premption" condition false. 
+	c) Making hold and wait false: Means we have to provide all necessary resource before the program get executed.
+	d) Making circular wait to non circular or acyclic wait: We can prevent this condition by giving numbers to process and allow them only 	   to request for the resource in increase order. Simply means process 3 cannot request process 2 for resource. It can only request to 		   process having number assigned greater than 3.
+3) Deadlock avoidance: We can follow algorithms such as Banker's algorithm. In this algo. we check whether putting the system in a condition is   safe or unsafe? like will it cause the deadlock or not.
+4) Deadlock detection and recovery: In this method. We detect the deadlock and make possible converies. After applying recovery we again detect deadlock. In case of true we again apply recovery otherwise we simply ignore it.
+
+NOTE: All of above methods except the 1st one reduces the system performance thats why we do not implement that. The only method which we pratically follow is Deadlock ignorance or Ostrich method.
+
+
+****************Banker's Algorith
+
+Question:
+
+Total: A=10, B=5, C=7 
+(No. of resources)
+Let A=CPU, B=Memory, C=printer
+
+Processes | Allocation	| Max Need  
+	  | A   B   C	| A   B   C	
+P1	  | 0   1   0	| 7   5   3		     
+P2	  | 2	0   0	| 3   2   2	
+P3	  | 3	0   2	| 9   0   2	
+P4	  | 2	1   1	| 4   2   2	
+P5	  | 0   0   2   | 5   3   3
+
+Here Allocation means how many resources already acquired or in used.
+Max need means how much they max need to get executed.
+
+Find the safe sequence (Safe sequence means a sequence in which we run the process and deadlock do not occur)
+
+Solution:
+Total given: A=10, B=5, C=7 
+
+Processes | Allocation	| Max Need   | Remaining Need  | Available Resources| Sequence Number
+	  | A   B   C	| A   B   C  |  A   B   C      |    A   B   C 	    |   	
+P1	  | 0   1   0	| 7   5   3  |  7   2   3      |    3   3   2       |   4th P1
+P2	  | 2	0   0	| 3   2   2  |  1   2   2      |    5   3   2       |   1st P2
+P3	  | 3	0   2	| 9   0   2  |  6   0   0      |    7   4   3	    |   5th P3
+P4	  | 2	1   1	| 4   2   2  |  2   1   1      |    7   4   5	    |   2nd P4
+P5	  | 0   0   2   | 5   3   3  |  5   3   1      |    7   5   5	    |   3rd P5
+Total     | 7   2   5   | 
+
+Formulas:
+Available Resource = total allocated resouces - Total Given resources
+Remaining Need = Max Need - Allocated
+To execute a process--> available resource >= remaining need
+
+NOTE: Once the a process has been executed then its allocated resources would be free/release so you have to add them in available resource to update the available resource list and so on. And the safe sequence cannot be unique. It can vary.
+
+
+*******************************Chapter 5
+**************************Memory Management and Degree of multiprogramming.
+
+As we all know we have divided our whole storage and termed as different names such as cache, registers, RAM (primary memory) and HDD or SDD  (Secondary memory). Here one the more important memory here is RAM which is primary memory. We have to take two concepts together multiprogamming (accodomodating as many programs in RAM) and memory management (That is taking all the process from the secondary memory and taking their chunks to RAM for its execution)
+
+NOTE: Remember CPU is very fast therefore it is connected with the RAM not with the secondary memory as secondary memories are slow. Moreover, we do not import the whole program in the memory we only import its segment or you can say a block into the memory.
+
+Multiprogramming can only be done when the size of your memory is large. So in order to increase the CPU utilization on in other words preventing the CPU to be in the idle state we have to increase the RAM so that we can import as many programs in the RAM and in case of one program is doing any I/O operation then other can be executed.
+
+CPU utlization = 1-K
+
+where k is the number of processes going for I/O operations.
+
+**************Memory Management techniques
+Memory management is one the most important job of an operating system. When ever a process is load in a memory then there is a small portion already allocated to the OS. 
+There are several memeory management techniques to manage the process to allocate in the memory which are given below:
+Majorly there are two main techniques:
+1) Contigous
+	a) Fixed partition
+	b) Variable Partition
+2) Non-Contigous
+	a) Paging
+	b) Mulilevel paging
+	c) Inverted Paging
+	d) Segmentation
+	e) Segmented Paging
+
+Lets discuss each technique one by one
+
+**Contigous-Fixed Partition (static):
+Such partitions were used in old Main frame computers where we define the memory partition in advance.
+In this type of partition technique the memory is already partited fixedly. Like assume we have a memory of let say 36MB and we divided them into 4 parts of unequal size of 4, 8, 8, 16 MBs (you can also divide them in equal size) 
+
+let say a process p1 comes of 2MB and OS allocate them in the memory of the prition of 4MB then there will be 2MB of space will be left in this 4MB pritition. Can we allocate this empty space to other process? The answer is NO. In Conitgous process the complete process is allocated. we cannot divide the process in different chunks. 
+
+**Internal fragmentation: The wastage of some space in a partition is called Internal-fragmentation. In this case we have some space in a partition but we cannot allocate it.
+
+**External fragmentation: Let say P1 of 2MB, P2 of 6MB, p3 of 6MB and p4 of 14MB comes and all four process get allocated in 4 paritions separately. Here collectively a total space of 8MB is left as all paritiions have 2MBs of free space. now let say a process of 5 MB comes. Can we accomodate that process? The answer is NO. though we have 8MB of total spaces is free but we cannot allocate it due to contiguous technique we cannot divide a process. This is called external-fragmentation.
+
+Limitations of fixed partition in contigous technique:
+1) Internal fragmentation will always there
+2) external fragmentation can also happen
+3) limitation in degree of multiprogramming (Reason: as if there is only four partition, so max 4 process can only come in the memory. Even if the size of each process coming in the memory partition is smaller than the size of partition. Max 4 processes can come. So we cannot accomodate as many processes we want.)
+4) Limit of process size: (If there is a process greater in size than the size of partition then we cannot accomodate it)
+
+Contigous-varialble Partition (Dynamic):
+In this technique we do not divide the memory in advance. We create the paritition in real time or we can instantly in the memory when a process arrive. Let say a process of 4MB arrives so we instantly create a partition of 4MB and will allocate it to the process. 
+In short the partition will be created on time.
+
+limitations:
+1) External fragmentation: let say a 4 process come in a row P1, p2, p3, p4. As size of 2, 4, 8, 6 MBs then 4 partitions will be created equal to the size of each process. Then let say while their execution one of the process get terminate let say P2 process that is of 4MB and let say another process get terminated let say p4 i.e 6MBs now there will two holes or empty spaces will created in the memory at the location of p2 and p4 now we have size left of 10MBs. Now if any 5th process comes having the size of let say 9MB so we cannot accomodate it. Though we have empty space of 10MB but still we cannot accomodate the reason is contigous. This is called external fragmentation.
+2) Allocation and deallocation will be complex
+
+pros:
+but there will be a scope of degree of multiprogramming. 
+
+
+**************Contigous: First-fit, next fit, best fit, worst fit algorithm
+
+These are the four algorithm which are used to import the processes in the memory. Lets discuss their working
+
+First fit:
+This algorithm simply start scanning from the top of the memory and check if there is any first hole. In case of yes it checks the size enough to store the process. If again yes then it stores the process in the memory. Size of the hole can be equal or greater than the process size. It is very fast as it looks from the first come first serve hole to store the process.
+
+Next-fit:
+In the algorithm when a second process comes then it will start scanning after first hole not from the start. And then the hole which will come first having size greater or equal than the size of process it will use that.
+
+Best-fit:
+This algorithm is used to store the process in a hole or partition which is exactly or nearly equal to the size of coming process. It completely scans the whole memory and then after finding the best-fit hole it stores the process. Its main goal is to provide minimum internal fragmentation. 
+This algorithm is slow as it scans the whole memory first.
+
+Worst-fit: 
+This algorithm is opposite of best fit. It also scans the whole memory and find the partition which will give the maximum internal fragmentation. This algorithm is also slow as it scans the whole memory first.
+
+
+***************Non-contgious: paging and framing
+In this technique we can divide our process into different parts and allocate them in different locations in memory. But here we have remember that the holes and spaces in the memory are not always constant they are getting change dynamically so when a new process comes we first check the memory how many holes are there and what are their sizes and then we divide our process. This whole chemistry is very time consuming. So in order to efficiently usage of memory we use the concept of paging and framing.
+
+paging means the division of a process and framing means division of memory.
+
+NOTE: size of frame = size of page
+
+we divide the our process in secondary memory into pages in advance and we also do framing of our memory. Since the size of frame is same as size of each page so allocation will be fast and easier. All the pages of process can be fit any where in any frame in the memory.
+
+let say we have 3 frames left and a process of 2 pages comes then this these two of its pages will be fit in the 2 frames of memory.
+
+***************Differences between Logical Address and Physical Address :
+The Logical Address is generated by the CPU while the program is running and the Physical Address is the location inside the main memory.
+
+We always use Local Address size and physical address size in  Bytes/Bits if they are not given in Bytes/Bits then we first have to convert them into Bytes/Bits. 
+for example: Local Address Size = 4GB then in Bytes it would be
+
+we know that,
+2^30 = 1G
+2^2 = 4
+
+So, Local address would be
+2^30 + 2^2 = 2^32G
+
+here 32 will be Bits.
+
+**NOTE:
+pages are stored in secondary memory
+frames are stored in ram, during processing
+
+******************Page table entries
+Page table is nothing just a table containing all the information of the page data in frame of the memory.
+Why there is a need of page table?
+Since we all know that CPU map the logical address on physical address to find the data in the frame.
+
+Following are entries that a page table contains:
+Frame no. |     Valid/Invalid			| Protection (R,W,X) 		    | Reference (0/1)   	   	| caching  	  | Dirty
+	  |   (means whether that page		| what kind of permission is needed | Least recent value		|  Enable/Disable | Modified or not
+	  |  exist in the defined frame or not)	| Either read, write or execute	    | tells Is this data has already 	|		  | 
+										    | imported in the memory or not	|
+
+
+
+
+
+
