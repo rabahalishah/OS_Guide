@@ -1927,13 +1927,27 @@ Data breaches happens whenever data travels from one place to another. We cannot
 
 To prevent the modifications we can use sessions which will be expired after some time.
 
+**************Types of Encryption
+Symmetric:
+Same key used to encrypt and decrypt. Therefore, K must be keep secret. 
+DES was an algo created by US-Gov. Keys were very short therefore, considered insecure.
+Tries-DES Considered more secure used 3 times using different keys
+
+Asymmetric:
+Used two keys:
+Public: Published key used to encrypt data
+Private: Key used to decrypt data and known by only authenticate individuals.
+
+Must make a public key such that it makes difficult to figure out the decryption key
+
 ***********Principle of protection
 Programs, users and system should be given enough privilge to perform their tasks.
 Domain: Set of access-rights such as R read, W write, X executable.
 
-***********
+*********** Terminologies
 Threat: Potential security violation of which there is chance to occur.
 Attack: An attempt to breach security
+WORM: It is a sub class of virus. Unlike virus it can spread from one computer to the other computer without any help of a person. It can raplicate it self and take adv of file system to travel unaided.
 
 *************Standard Security Attacks
 
