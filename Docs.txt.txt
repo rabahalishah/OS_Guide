@@ -1489,6 +1489,7 @@ so here for all philospher none of them would be able to eat. As all have only 1
 To remove deadlock you have to switch the code of the philospher so that instead of taking left fork first and then right fork he should pick right fork first and then left fork. In doing it so all philospher would be able to eat simulaneously except that modified philospher. He will remain blocked until rest of the 4 do not complete eating. In doing this only one philospher will be blocked not all. So we can prevent deadlock in such conditions.
 
 
+******************************Chapter 4
 ****************Deadlock and its necessary conditions
 ********Deadlock condition*****
 
@@ -1741,9 +1742,209 @@ Frame no. |     Valid/Invalid			| Protection (R,W,X) 		    | Reference (0/1)   	
 	  |   (means whether that page		| what kind of permission is needed | Least recent value		|  Enable/Disable | Modified or not
 	  |  exist in the defined frame or not)	| Either read, write or execute	    | tells Is this data has already 	|		  | 
 										    | imported in the memory or not	|
+********************Multi level paging
+why there is a need of multi level paging?
+When the size of page is greater than the size of frame. Then we divide our page into more than one page that is called multi-page.
+
+NOTE: In normal paging process, Every process has its own page Table and we also store these page tables into the frames of the main memory. let say there are 20 processes then there will be 20 process tables representing the information of the processess
+
+
+*****************Inverted paging
+In normal tabel we have a format something like that
+
+page no. | frame no.
+
+every process has its own above mentioned table and all these tables would be store in the memory. So, there is space required to store every page table in the memory. SO there could be a shortage of memory.
+
+SO to solve this problem we introduced a global tabel which contains all the page tables of all processes in a single table and then we store that global tale into the memory instead of storing each page table for each process.
+
+
+why we call it an inverted table? The reason lies in its format:
+
+frame no. | page no. | process ID
+
+
+since here as compared to normal table frame no. and page no. are inverted there for it is called inverted table. Here process is find by its frame no. where as in normal table the process was found by page  no.
+
+*************************************************
+*******************Thrashing
+Thrashing a process related to multiprogramming. In simple words thrashing is the sudden decrease in the process of CPU utilization. This scenerio occurs when default paging (absense of required page in main memory) increases and CPU spends its time to bring the required page from the secondary memory to main memory. This time is also called "Default page service time" (time required to service the page from secondary memory to the main memory).
+
+
+Our main goal is to increase the degree of multiprogramming and maximize the CPU utilization. To do so we only import the 1st page of process instead of importing the whole page in the memory. But in case CPU demands for the page 2 of the process 1. Then CPU will have to bring the page 2 of process 1 from secondary memory to main memory. In this way CPU will spend time in bringing the default page. This will decrease the CPU utilization. if There will be a case where page of every process is required by the CPU then in such case Default page service time will be maximum and CPU utilization will be lowest this is called thrashing.
+
+
+Image a graph having Degree of mutliprogramming on x-axis and CPU utilization on y-axis and plot a humb shape graphe increasing, reaching to the maximum altitude and then decreasing to lowest. The decreasing graphs shows thrashing.
+
+
+****************************Segmentation vs paging
+In both segmentation and paging we divide our process and import in the main memory. But the difference is that in paging we divide the process without knowing that what is inside the code. And the size of page is fixed. Whereas in segmentation we divide the process in a sensible way knowing that what is inside the code and in this case the size of the segment can vary.
+
+let say there is a function in a code called add(). In paging there may be a case where this page may be divided in this way that this function get divided. Now our half code will present in the other frame and other code will be present the other frame. This may cause a problem of page default.
+
+In segmentation this add() function will be completely considered as a segment. And there could be several segments depending on the code.
+
+Now as we know CPU generates a logical address and we have to convert this address into  physical address to access the required segment from the secondary memory.
+
+There is also a segment table Which contains a base address and the size of the segment.
+There will be labelled a starting point and ending point of the segment in the memory.
+
+
+*******************************Overlay
+Overlay is a technique of adjusting a large process in a memory even when the space in the partition is of small size. 
+Let say there is a Memory of 32 MB and there are 4 partitions
+8MB, 4MB, 4MB, 16MB
+
+Each program is like a different picture puzzle that needs some of these pieces to run. But, there's a challenge: the puzzle board isn't big enough for all the pictures at once. Now, overlay comes into play. Instead of trying to fit all the pictures on the board at the same time (which might not be possible), the operating system cleverly swaps puzzle pieces in and out. It's like having a few pictures on the board, finishing them, removing those pieces, and putting up new pieces for another set of pictures.
+The overlay technique helps in efficiently using the limited puzzle board (memory space). Only the pieces needed for the currently running program are on the board, and when a program is done with its pieces, the operating system swaps them out for the next program's pieces.
+
+****************************Virtual Memory
+Virtual memory is simply a technique in which operating system creates an illusion for the user to accomodate the larger process in a memory by using some physical memory that is HDD. This is done by swapping of the pages efficiently by the operating system.
+Think RAM as your desk. when you desk will be fully occupied you put some documents which are not in used in the drawer and then put the required objects on to the table. and when there will be a need of the document in the drawer then you bring out the documents from the drawer. Swapping is happening here.
+
+Effective Memory Access Time (EMAT) is a metric used to evaluate the overall time it takes for a computer to access and retrieve information from its memory subsystem. It takes into account the various components that contribute to the total memory access time. The formula for Effective Memory Access Time is often expressed as:
+
+
+************************Translation lookaside buffer (TLB)
+Its basically a cache memory which is faster than RAM but very small in size. Normally if CPU want to execute a process then CPU will look into the page table which is in the Main Memory and then here CPU will get the frame number after knowing the frame number CPU will get the access to the process. 
+
+To make this process faster we keep some of our page tables in the TLB memory. Here CPU will get the frame faster from the TLB than the RAM after accessing the frame number CPU will access the process in the memory. 
+
+But there is a problem which is that if the required page is not present in the TLB then CPU will have to follow the normal procedure to get the process but the normal procedure will be followed after spending time in searchin the required page in TLB memory.
+
+NOTE: CPU generates a logical address which contains page number and page size/offset.
+
+*******************Page replacement algorithm
+Since we have already discussed that we do not keep all the processes in the memory we just create an illusion for the programmer by keeping some pages of all the process in the main memory. But what if your main  memory has been filled and some other process wants to cone then we have to replace one page. Which page would be replaced? This is decided by the algorithms there are 4 page replacement algorithms which are as follow:
+1) FIFO (First in first out): In this algo the frame which was filled first will be replaced in case of any other process comes.
+2) Optimal Page replacement: In this algo the page which is demand most lately in the future will be replaced. Here we have to look forward.
+3) Least Recently Used (LRU): In this algo the page which was demand earlier in the past will be replaced. Here we have to look back. It is slower than FIFO.
+4) Most Recently Used (MRU): In this algo the page which is most recently ised in the past will be replaced. Here we look back too. It is opposite to LRU.
+
+**Beladys Anomaly: Belady is a scientist and he noticed that in case of FIFO algorithm, on increasing the number of frames in the memory the number of page defaults increases. This is a disadvantage of FIFO algorithm. whereas Common sense says that on increasing number of frames we will be able to bring more processes in the memory so there will be less page default. But in actual this do not happened.
+
+***********************************Chapter 6
+******************Disk Architecture
+A Hard Disk consists of platters (image platter as a simple round shape plate/CD), surface, read write heads, Every platter have tracks on it, Each track have several sector and in sectors we store data.
+Hard disk is a collection of multiple platters. Platter stores data in both sides (upside and downside).
+platters rotate about their axis and read/write heads can move back and forth to reach their desired track.
+
+*********Disk Access time
+Seek time: Time taken by the read write head to reach the desired track
+Rotation time: Time taken by read wirte head to complete one full rotation.
+Rotational Latency: Time taken to reach the desired sector. (it is hald of rotational time)
+Transfer time: Data to be transfered divided by transfer rate.
+
+************Disk scheduling algorithm
+Ultimately our main goal is to reduce the seek time (time required by the read/write to reach the desired track).
+We do this by using scheduling algorithms:
+FCFS (First come first serve): In this algo we will execute the request as the requests are coming. The adv is that there is no starvation (one req is waiting to exe.) in this algo. But 				performance is not good in some cases. As it do not see the distance it simple move the Read/write headers to the desired track.
+SSTF (Shortest seek time first): In this algo header will be move to that track first which is nearest to its current position and in this way it provides the minimum seek time. It may 				provide the worst result in some cases. The disadv of this algo is that we always to check first which is the nearest track from the new current position 				and other disadv is of starvation.
+SCAN: This algo also called elevator algo. In this algo our header will move either in the larger direction of track or in smaller direction of track but once it has started let say moving 	in the larger direction then it will not stop until it reaches all the tracks coming in its way till the last largest end track whether the request was not asked for going to the 	end of the track but it will go this is flaw of SCAN. Starvation could be an issue in this algo.
+LOOK: LOOK is exactly same as SCAN algo but the difference is that it will not go to the end of the track it will go till the request value in the desired direction. Therefore LOOK is more    	efficient than SCAN as it do not waste time in going till the end of the track.
+CSCAN (Circular scan): CSCAN is same as SCAN algo but the difference is that once it has reaches to the end of the track in either direction then it has to return to 0 position. While 			returning back to 0 position it will not accept any request.
+CLOOK (Circular look): This algo is same as LOOK but the difference is that once it reaches to the largest request value then it will come back to the lowest track value then it will start listening again to the further request. vice versa for smaller track direction while reaching to the lowest track value after reaching the maximum value, it will not listen to any request.
+
+****************************Chapter 7 File System:
+In OS every thing is stored in the form of file. Computer send and receives data in the form of file and talks in terms of file.
+While storing these files in the HDD we map our files with the sectors.
+
+***There are following operations which we can perform on files:
+Creating
+Reading
+Writing
+Deleting (In deleting all content of the file and metadata of the file both get deleted)
+Truncating (In truncating only data is deleted its Attributes/Meta Data/Info about the file remains in the Memory)
+Repositioning
+
+***Attributes of files (Meta Data: Data about data or info about data)
+Name
+Extension Type
+Identifier
+Location
+Size
+Modified data/ Created data
+Protection/ permission (Either this file is readable, writable or executable)
+Encryption
+
+***************Allocation Methods in File system:
+Here we will discuss how we will allocate our files in the memory. There are two major methods of allocation:
+1) Contigous Allocation
+2) Non-Continuous Allocation (Linked list allocation, Indexed Allocation)
+
+Why we use Allocation mehods?
+For Efficient disk utilization
+Faster access of data
+
+****Contigous Allocation
+In contigous Allocation we store the data in continous form we do not divide our data at different location in the memory. Since we all know we first divide our data in several blocks then these blocks will be placed next to each other in case of contigous Allocation. let say we have 2 files each having 5 and 7 blocks respectively. And when we allocate them in the memory then let say File A is located at 67 seat number then its first block will be allocate at 67 other at 68 and so on till 71. And let say file B is allocated at 90 seat number then its first block will be at 90 other at 91 and so on and so forth till 96 as there are seven blocks
+
+Adv:
+Easy to implement
+Excellent read performance
+
+DisAdv:
+Disk will become fragmented (As data need the space as of its number of blocks otherwise it wont be fit in the memory)
+Difficult to grow file
+
+************Non-Contigous Allocation: Linked List Allocation
+In Non-contigous we are allowed to split our data and scatter in the memory where ever we find space. One block of file can be at 67 seat number let say. And its other block can be at 89. No matter!
+
+Each block contains a pointer which points towards the next block of the file. In this way they form a linked list. We need one block to find other. In Contigous we do not need pointers as we know its next block will be available next to it.
+
+Adv:
+No exrernal Fragmentation
+File can be increased easily
+
+
+DisAdv:
+Large Seek time (Time req. to find the desired sector/Data)
+Random Access/Direct access is difficult (As there is a linked list we have to go through the list to get reach to the desired data block)
+Overhead of pointers (Several pointers will be used as one pointer is pointing toward the next pointer)
+
+********************Non-Contigous Allocation: Indexed Allocation
+In Non-contigous we are allowed to split our data and scatter in the memory where ever we find space. One block of file can be at 67 seat number let say. And its other block can be at 89. No matter!
+
+In this allocation there is block which contains the index/Pointers of all other blocks of a file. Once we have get this global block which contains all the indexes then we will be easily able to direct access to any block of a that file.
+
+Adv:
+Support direct access
+No external Fragmentation
+
+
+DisAdv:
+Pointer overhead
+Multilevel indexeing
+
+
+*******************************Chapter 8: Security and Violation
+While considering security we have to consider CIA:
+Confidentiality: My data should be read by unauthorized user.
+Integrity: My data should be modified by unauthorized user.
+Availability: My data should be available to authorized user whenever he needs it.
+
+Data breaches happens whenever data travels from one place to another. We cannot prevent breaching but all we can do is to encrypt our data (Converting data into some other form so in case of any unauthorized access hacker cannot understand it)
+
+To prevent the modifications we can use sessions which will be expired after some time.
+
+***********Principle of protection
+Programs, users and system should be given enough privilge to perform their tasks.
+Domain: Set of access-rights such as R read, W write, X executable.
+
+***********
+Threat: Potential security violation of which there is chance to occur.
+Attack: An attempt to breach security
+
+*************Standard Security Attacks
+
+Normal
+Masquerading: Predenting to be someone, an unauthorized user to escalate priviliges.
+Man in the middle attack: Sitting between the dataflow and becoming masquerade as a sender to receiver and viceversa.
+
+
+*************Linker and Loader
+HLL (High level language) --> Compiler (compile code, check errors and syntax and convert code into assembly language that is an object file) --> Linker (receives obj file convert it into and executable file) --> Loader (Exports the file the into the memory) --> Memory (Memory gives access to CPU)
 
 
 
-
-
-
+***************************************************************************
